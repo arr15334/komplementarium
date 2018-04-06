@@ -1,6 +1,6 @@
-# DBMS-webapp
+# Komplementarium Webapp
 
-> dbms Webapp
+> By Rodrigo Arriaza and Sebastian Galindo
 
 ## Build Setup
 
