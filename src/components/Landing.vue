@@ -95,22 +95,22 @@ hr{
   animation: imageAnimation 50s linear infinite;
 }
 .slideshow li:nth-child(1) {
-  background-image: url(https://source.unsplash.com/ZtLASJerPb0);
+  background-image: url("../assets/kazuend-127416-unsplash.jpg");
 }
 .slideshow li:nth-child(2) {
-  background-image: url(https://source.unsplash.com/9x3jGcu3qQ0);
+  background-image: url("../assets/anton-darius-thesollers-295119-unsplash.jpg");
   animation-delay: 10s;
 }
 .slideshow li:nth-child(3) {
-  background-image: url(https://source.unsplash.com/ejlRp5ktpfY);
+  background-image: url("../assets/hal-gatewood-569092-unsplash.jpg");
   animation-delay: 20s;
 }
 .slideshow li:nth-child(4) {
-  background-image: url(https://source.unsplash.com/jjCWRxTlATc);
+  background-image: url("../assets/tanaphong-toochinda-267381-unsplash.jpg");
   animation-delay: 30s;
 }
 .slideshow li:nth-child(5) {
-  background-image: url(https://source.unsplash.com/e3Y23rtVk8k);
+  background-image: url("../assets/valeria-zoncoll-145929-unsplash.jpg");
   animation-delay: 40s;
 }
 @keyframes imageAnimation {
