@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import LandingPage from '@/components/Landing'
 import Signin from '@/components/Signin'
 import Dashboard from '@/components/Dashboard'
+import BabyNew from '@/components/BabyNew'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router(
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard
+      },
+      {
+        path: '/baby',
+        name: 'BabyNew',
+        component: BabyNew
       }
     ]
   },

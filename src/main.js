@@ -7,6 +7,7 @@ import VueIntro from 'vue-introjs'
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import solid from '@fortawesome/fontawesome-free-solid'
+import brands from '@fortawesome/fontawesome-free-brands'
 // import miniToastr from 'mini-toastr'
 
 import App from '@/App'
@@ -16,6 +17,7 @@ import '@/theme/theme.scss'
 import config from '@/settings/config'
 
 fontawesome.library.add(solid)
+fontawesome.library.add(brands)
 
 const env = config.env
 const analytics = config[env].analytics || null

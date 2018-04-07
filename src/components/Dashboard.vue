@@ -1,44 +1,61 @@
 <template>
   <div>
     <Navbar/>
-    <div class="container is-fluid">
-      <div class="leftmenu">
-        <aside class="box menu">
-          <p class="menu-label">
-            General
-          </p>
-          <ul class="menu-list">
-            <li><a>Dashboard</a></li>
-            <li><a>Customers</a></li>
-          </ul>
-          <p class="menu-label">
-            Administration
-          </p>
-          <ul class="menu-list">
-            <li><a>Team Settings</a></li>
-            <li>
-              <a class="is-active">Manage Your Team</a>
-              <ul>
-                <li><a>Members</a></li>
-                <li><a>Plugins</a></li>
-                <li><a>Add a member</a></li>
-              </ul>
-            </li>
-            <li><a>Invitations</a></li>
-            <li><a>Cloud Storage Environment Settings</a></li>
-            <li><a>Authentication</a></li>
-          </ul>
-          <p class="menu-label">
-            Transactions
-          </p>
-          <ul class="menu-list">
-            <li><a>Payments</a></li>
-            <li><a>Transfers</a></li>
-            <li><a>Balance</a></li>
-          </ul>
-        </aside>
+
+    <section class="section">
+      <div class="columns">
+        <div class="column is-one-third">
+          <div class="container is-fluid">
+            <div class="leftmenu">
+              <aside class="box menu">
+                <p class="menu-label">
+                  Funciones
+                </p>
+                <ul class="menu-list">
+                  <li><a  v-bind:class="{'is-active': showToday}"
+                          v-on:click="viewToday">
+                    Inicio
+                  </a></li>
+                  <li><a  v-bind:class="{'is-active': showCalendar}"
+                          v-on:click="viewCalendar">
+                    Calendario
+                  </a></li>
+                </ul>
+                <p class="menu-label">
+                  Administrar
+                </p>
+                <ul class="menu-list">
+                  <li>
+                    <a>Editar información hijos</a>
+                    <ul>
+                      <li><a>Rodrigo</a></li>
+                      <li><a>Siddhartha</a></li>
+                      <li><a>Alejandro</a></li>
+                    </ul>
+                  </li>
+                  <li><a>Mediciones</a></li>
+                  <li><a>Historial dietas</a></li>
+                </ul>
+                <p class="menu-label">
+                  Consejos
+                </p>
+                <ul class="menu-list">
+                  <li><a>Nutrición</a></li>
+                  <li><a>Alergias</a></li>
+                  <li><a>Enfermedades</a></li>
+                </ul>
+              </aside>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="box">
+            <p v-show="showCalendar">Calendario</p>
+            <p v-show="showToday">Hoy</p>
+          </div>
+        </div>
       </div>
-    </div>  
+    </section>
   </div>
 
 </template>
@@ -63,16 +80,23 @@
     // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
+        showCalendar: false,
+        showToday: true
       }
     },
 
     methods: {
+      viewCalendar: function () {
+        this.showCalendar = true
+        this.showToday = false
+      },
+      viewToday: function () {
+        this.showCalendar = false
+        this.showToday = true
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .leftmenu {
-    width: 38.2%;
-  }
 </style>

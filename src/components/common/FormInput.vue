@@ -16,11 +16,11 @@
                  class="input"
                  @input="updateValue($event.target.value)">
 
-          <span class="icon is-left" v-if="hasIcon"><i class="fa" :class="iconClass"></i></span>
+          <span class="icon is-left" v-if="hasIcon"><i class="fas" :class="iconClass"></i></span>
 
-          <span class="icon is-right has-text-success" v-if="isSuccess"><i class="fa fa-check"></i></span>
+          <span class="icon is-right has-text-success" v-if="isSuccess"><i class="fas fa-check"></i></span>
 
-          <span class="icon is-right has-text-danger" v-if="isDanger"><i class="fa fa-warning"></i></span>
+          <span class="icon is-right has-text-danger" v-if="isDanger"><i class="fas fa-warning"></i></span>
         </div>
 
         <p class="help is-danger" v-if="isDanger">{{ errorMsg }}</p>
