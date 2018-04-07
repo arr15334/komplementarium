@@ -8,6 +8,8 @@ import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import solid from '@fortawesome/fontawesome-free-solid'
 import brands from '@fortawesome/fontawesome-free-brands'
+import 'vue-event-calendar/dist/style.css' // ^1.1.10, CSS has been extracted as one file, so you can easily update it.
+import vueEventCalendar from 'vue-event-calendar'
 // import miniToastr from 'mini-toastr'
 
 import App from '@/App'
@@ -27,7 +29,7 @@ if (analytics !== null && analytics.length > 0) {
     router
   })
 }
-
+Vue.use(vueEventCalendar, {locale: 'es'}) // locale can be 'zh' , 'en' , 'es', 'pt-br', 'ja', 'ko', 'fr', 'it', 'ru', 'de', 'vi', 'ua'
 Vue.use(VueIntro)
 /*
 miniToastr.init()

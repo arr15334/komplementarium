@@ -50,8 +50,8 @@
         </div>
         <div class="column">
           <div class="box">
-            <p v-show="showCalendar">Calendario</p>
-            <p v-show="showToday">Hoy</p>
+            <Calendar v-show="showCalendar"/>
+            <Today v-show="showToday"/>
           </div>
         </div>
       </div>
@@ -63,6 +63,8 @@
   // Script donde se realiza los metodos de comunicación de la webapp
   import FormCheckbox from '@/components/common/FormCheckbox'
   import FormInput from '@/components/common/FormInput'
+  import Calendar from '@/components/common/Calendar'
+  import Today from '@/components/common/Today'
   import Loader from '@/components/common/Loader'
   import ConfirmModal from '@/components/common/ConfirmModal'
   import Navbar from '@/components/common/Navbar'
@@ -72,6 +74,8 @@
     components: {
       FormCheckbox,
       FormInput,
+      Calendar,
+      Today,
       ConfirmModal,
       Navbar,
       Loader
