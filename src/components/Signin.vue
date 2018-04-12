@@ -13,28 +13,35 @@
           <div class="column is-8-tablet is-offset-2-tablet is-6-desktop is-offset-3-desktop">
             <!-- form -->
             <form>
-              <div class="box" style="padding-top: 10%;">
-                <FormInput ref="firstfield"
-                           type="text"
-                           icon="user"
-                           label="Nombre"
-                           place-holder="Nombres"
-                           v-model="firstName"
-                           :max-length="255"
-                           :is-required="true"
-                           :is-success="firstNameIsSuccess"
-                           :is-danger="firstNameIsDanger"
-                           :error-msg="firstNameErrorMsg"/>
-                <FormInput type="password"
-                        icon="user"
-                        label="Contraseña"
-                        place-holder="Nombres"
-                        v-model="password"
-                        :max-length="255"
-                        :is-required="true"
-                        :is-success="firstNameIsSuccess"
-                        :is-danger="firstNameIsDanger"
-                        :error-msg="firstNameErrorMsg"/>
+              <div class="box">
+                <div class="field zenter">
+                  <label class="label">Nombre</label>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control has-icons-left">
+                        <input type="text"
+                              class="input"
+                              placeholder="Nombre">
+                        <span class="icon is-small is-left"><font-awesome-icon icon="user" /></span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field zenter">
+                  <label class="label">Constraseña</label>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control has-icons-left">
+                        <input type="password"
+                              class="input"
+                              placeholder="Contraseña">
+                        <span class="icon is-small is-left"><font-awesome-icon icon="unlock" /></span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="field is-grouped is-grouped-centered" style="margin-top: 30px;">
                   <router-link class="button is-primary"
                   :disabled="isSubmitting"
@@ -104,7 +111,7 @@
 
       firstNameIsValid: function () {
         if (!this.firstNameIsSet || this.firstName.trim().length <= 0) {
-          this.firstNameErrorMsg = 'Debe ingresar sus nombres'
+          this.firstNameErrorMsg = 'Debe ingresar su nombre'
           return false
         }
         this.firstNameErrorMsg = null
@@ -130,5 +137,10 @@
 #google_btn {
   background-color: #dd381d;
   color: #fff;
+}
+
+.zenter {
+  width: 68%;
+  margin: 2% auto;
 }
 </style>

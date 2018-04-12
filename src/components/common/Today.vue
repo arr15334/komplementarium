@@ -16,27 +16,21 @@
             <td>Desayuno</td>
             <td>Puré de güicoy, compota de manzana</td>
             <td>
-              <div class="square" v-on:click="setBreakfastCheck">
-                <font-awesome-icon icon="check" v-show="breakfastIsChecked" style="width: 100%"/>
-              </div>
+              <input type="checkbox">
             </td>
           </tr>
           <tr>
             <td>Almuerzo</td>
             <td>Puré de güicoy, compota de manzana</td>
             <td>
-              <div class="square" v-on:click="setBreakfastCheck">
-                <font-awesome-icon icon="check" v-show="false" style="width: 100%"/>
-              </div>
+              <input type="checkbox">
             </td>
           </tr>
           <tr>
             <td>Cena</td>
             <td>Puré de güicoy, compota de manzana</td>
             <td>
-              <div class="square">
-                <font-awesome-icon icon="check" v-show="false" style="width: 100%"/>
-              </div>
+              <input type="checkbox">
             </td>
           </tr>
         </tbody>
@@ -72,5 +66,16 @@ export default {
   border-radius: 10%;
 	float: left;
 	margin: 1.66%;
+}
+input[type='checkbox'] {
+    -webkit-appearance:none;
+    width:30px;
+    height:30px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: #abd;
 }
 </style>
