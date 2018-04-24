@@ -3,6 +3,7 @@ import Router from 'vue-router'
 // import Dashboard from '@/components/Dashboard'
 import LandingPage from '@/components/Landing'
 import Signin from '@/components/Signin'
+import Register from '@/components/Register'
 import Dashboard from '@/components/Dashboard'
 import BabyNew from '@/components/BabyNew'
 
@@ -20,6 +21,11 @@ export default new Router(
         path: '/signin',
         name: 'Signin',
         component: Signin
+      },
+      {
+        path: '/register',
+        name: 'Register',
+        component: Register
       },
       {
         path: '/dashboard',

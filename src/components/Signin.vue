@@ -11,18 +11,23 @@
       <div class="container">
         <div class="columns">
           <div class="column is-8-tablet is-offset-2-tablet is-6-desktop is-offset-3-desktop">
+            <div class="notification is-danger" v-show="showBadLogin">
+              Credenciales inválidas. Inténtelo nuevamente.
+            </div>
             <!-- form -->
-            <form>
+            <form @submit.prevent="submitForm" novalidate>
               <div class="box">
                 <div class="field zenter">
-                  <label class="label">Nombre</label>
+                  <label class="label">Correo electrónico</label>
                   <div class="field-body">
                     <div class="field">
                       <p class="control has-icons-left">
                         <input type="text"
                               class="input"
-                              placeholder="Nombre">
-                        <span class="icon is-small is-left"><font-awesome-icon icon="user" /></span>
+                              placeholder="Correo"
+                              v-model="email"
+                              v-bind:class="{'is-danger': emailIsDanger, 'is-success': emailIsSuccess}">
+                        <span class="icon is-small is-left"><font-awesome-icon icon="envelope" /></span>
                       </p>
                     </div>
                   </div>
@@ -35,6 +40,7 @@
                       <p class="control has-icons-left">
                         <input type="password"
                               class="input"
+                              v-model="password"
                               placeholder="Contraseña">
                         <span class="icon is-small is-left"><font-awesome-icon icon="unlock" /></span>
                       </p>
@@ -43,22 +49,21 @@
                 </div>
 
                 <div class="field is-grouped is-grouped-centered" style="margin-top: 30px;">
-                  <router-link class="button is-primary"
-                  :disabled="isSubmitting"
-                  :to="{name: 'BabyNew'}">
-                  Iniciar sesión
-                  </router-link>
+                  <button type="submit"
+                          class="button is-primary"
+                          :class="{'is-loading': isSubmitting}"
+                          v-on:click="">Iniciar sesión
+                  </button>
                 </div>
 
               </div>
               <div class="field is-grouped is-grouped-centered">
                 <div class="control">
-                  <router-link id="fb_btn" class="button"
-                  :disabled="isSubmitting"
-                  :to="{name: 'Dashboard'}">
-                  Ingresa con  <span class="icon" style="margin-left: 2px;"> <font-awesome-icon :icon="['fab', 'facebook-square']"/> </span>
-                  </router-link>
-
+                  <!--
+                  <button id="fb_btn" class="button" v-on:click="facebookLogin()" target="_blank">
+                    Ingresa con  <span class="icon" style="margin-left: 2px;"> <font-awesome-icon :icon="['fab', 'facebook-square']"/> </span>
+                  </button>
+                  -->
                   <router-link id="google_btn" class="button"
                   :disabled="isSubmitting"
                   :to="{name: 'Dashboard'}">
@@ -68,10 +73,7 @@
               </div>
               <div class="field is-grouped is-grouped-centered">
                 <div class="control">
-                  <button type="submit" class="button is-primary"
-                  :class="{'is-loading': isSubmitting}">
-                    Regístrate
-                  </button>
+                  <a href="/#/register">¿No tienes cuenta? ¡Regístrate!</a>
                 </div>
               </div>
             </form>
@@ -97,33 +99,70 @@
     },
     data () {
       return {
-        firstName: null,
+        email: null,
         password: null,
-        firstNameErrorMsg: null,
+        emailErrorMsg: null,
         isLoading: false,
-        isSubmitting: false
+        isSubmitting: false,
+        showBadLogin: false
       }
     },
     computed: {
-      firstNameIsSet: function () {
-        return (this.firstName !== null)
+      emailIsSet: function () {
+        return (this.email !== null)
       },
 
-      firstNameIsValid: function () {
-        if (!this.firstNameIsSet || this.firstName.trim().length <= 0) {
-          this.firstNameErrorMsg = 'Debe ingresar su nombre'
+      emailIsValid: function () {
+        if (!this.emailIsSet || this.email.trim().length <= 0) {
+          this.emailErrorMsg = 'Debe ingresar su nombre'
           return false
         }
-        this.firstNameErrorMsg = null
+        this.emailErrorMsg = null
         return true
       },
 
-      firstNameIsSuccess: function () {
-        return (this.firstNameIsSet && this.firstNameIsValid)
+      emailIsSuccess: function () {
+        return (this.emailIsSet && this.emailIsValid)
       },
 
-      firstNameIsDanger: function () {
-        return (this.firstNameIsSet && !this.firstNameIsValid)
+      emailIsDanger: function () {
+        return (this.emailIsSet && !this.emailIsValid)
+      }
+    },
+
+    methods: {
+      facebookLogin: function () {
+        console.log('entro')
+        return this
+          .$store.dispatch('login_fb')
+          .then((response) => {
+            console.log(response)
+          })
+      },
+      submitForm: function (e) {
+        if (!this.validForm()) {
+          e.preventDefault()
+          return
+        }
+        const data = {
+          email: this.email,
+          password: this.password
+        }
+        return this
+          .$store.dispatch('login_local', data)
+          .then((response) => {
+            if (response.success) {
+              this.$router.push({name: 'Dashboard', params: {user: response.user}})
+            } else {
+              this.showBadLogin = true
+            }
+          })
+          .catch(err => {
+            throw err
+          })
+      },
+      validForm: function () {
+        return true
       }
     }
   }

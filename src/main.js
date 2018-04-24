@@ -21,6 +21,7 @@ import config from '@/settings/config'
 fontawesome.library.add(solid)
 fontawesome.library.add(brands)
 
+// d55a9bf7e23607d7b95f5c716643bfd3
 const env = config.env
 const analytics = config[env].analytics || null
 if (analytics !== null && analytics.length > 0) {

@@ -3,6 +3,10 @@
     <Navbar/>
 
     <section class="section">
+      <div class="notification is-primary" v-show="showWelcome">
+        <button class="delete" v-on:click="showWelcome = false"></button>
+        Bienvenido/a {{ currentUser.name }}
+      </div>
       <div class="columns">
         <div class="column is-one-third">
           <div class="container is-fluid">
@@ -85,7 +89,9 @@
     data () {
       return {
         showCalendar: false,
-        showToday: true
+        showToday: true,
+        currentUser: null,
+        showWelcome: true
       }
     },
 
@@ -97,6 +103,13 @@
       viewToday: function () {
         this.showCalendar = false
         this.showToday = true
+      }
+    },
+
+    created () {
+      this.currentUser = this.$route.params.user
+      if (!this.currentUser) {
+        this.$router.push({name: 'Signin'})
       }
     }
   }

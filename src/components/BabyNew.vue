@@ -13,27 +13,60 @@
                              icon="user"
                              label="Nombre"
                              place-holder="Nombres"
-                             v-model="firstName"
+                             v-model="babyName"
                              :max-length="255"
                              :is-required="true"
                              :is-success="firstNameIsSuccess"
                              :is-danger="firstNameIsDanger"
                              :error-msg="firstNameErrorMsg"/>
                   <date-chooser label="Fecha de nacimiento" v-model="birthdate"/>
-                  <FormInput
-                             type="number"
-                             icon="user"
-                             label="Peso"
-                             place-holder="20"/>
-                  <FormInput ref="firstfield"
-                             type="number"
-                             icon="user"
-                             label="Altura"
-                             place-holder="50"/>
-                </div>
 
+                  <div class="field is-horizontal has-addons">
+                    <div class="field-label is-small">
+                      <label class="label">Peso</label>
+                    </div>
+                    <div class="field-body">
+
+                        <p class="control">
+                          <input class="input" type="number" placeholder="Peso">
+                        </p>
+                        <p class="control">
+                          <span class="select">
+                            <select>
+                              <option>kg</option>
+                              <option>lbs</option>
+                            </select>
+                          </span>
+                        </p>
+                    </div>
+                  </div>
+
+                  <div class="field is-horizontal has-addons">
+                    <div class="field-label is-small">
+                      <label class="label">Altura</label>
+                    </div>
+                    <div class="field-body">
+
+                        <p class="control">
+                          <input class="input" type="number" placeholder="Altura">
+                        </p>
+                        <p class="control">
+                          <span class="select">
+                            <select>
+                              <option>cm</option>
+                              <option>ft</option>
+                            </select>
+                          </span>
+                        </p>
+                    </div>
+                  </div>
+                </div>
+                <span class="tag is-success" v-for="baby in babys"> {{ baby }}
+                  <button class="delete is-small" v-on:click="removeBaby(baby)"></button> </span>
                 <div style="margin-top: 30px;">
-                  <button class="button is-primary"><span class="icon" style="margin-right: 2px;"> <font-awesome-icon icon="plus"/> </span> ¡Tengo otro bebé! </button>
+                  <button class="button is-primary" v-on:click="addBaby">
+                    <span class="icon" style="margin-right: 2px;"> <font-awesome-icon icon="plus"/> </span>
+                     ¡Tengo otro bebé! </button>
                 </div>
                 <div class="field is-grouped is-grouped-centered">
                   <router-link :to="{name: 'Dashboard'}" class="button is-primary">¡Listo! </router-link>
@@ -66,7 +99,9 @@
       return {
         firstName: null,
         birthdate: null,
+        babyName: null,
         firstNameErrorMsg: null,
+        babys: [],
         isLoading: false,
         isSubmitting: false
       }
@@ -91,6 +126,19 @@
 
       firstNameIsDanger: function () {
         return (this.firstNameIsSet && !this.firstNameIsValid)
+      }
+    },
+    methods: {
+      addBaby: function () {
+        this.babys.push(this.babyName)
+        this.babyName = null
+      },
+      removeBaby: function (baby) {
+        for (const b of this.babys) {
+          if (b === baby) {
+            this.babys.pop()
+          }
+        }
       }
     }
   }

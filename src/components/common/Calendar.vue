@@ -3,15 +3,16 @@
 </template>
 
 <script>
+// obtenido de: https://github.com/GeoffZhu/vue-event-calendar
 export default {
   data () {
     return {
       demoEvents: [{
         date: '2018/11/12', // Required
-        title: 'Foo' // Required
+        title: 'Desayuno' // Required
       }, {
         date: '2016/12/15',
-        title: 'Bar',
+        title: 'Refacción',
         desc: 'description',
         customClass: 'disabled highlight' // Custom classes to an calendar cell
       }]

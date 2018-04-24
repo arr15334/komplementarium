@@ -11,9 +11,9 @@ const config = {
     forgotCallback: '/#/reset'
   },
 
-  apiTables: '/databases/{db}/tables',
-  apiDatabases: '/databases',
-  apiQuery: '/databases/queries'
+  apiLoginGoogle: '/login/google',
+  apiRegister: '/register',
+  apiLogin: '/login'
 }
 
 export default config
