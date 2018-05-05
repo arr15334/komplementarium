@@ -29,6 +29,7 @@
                               v-bind:class="{'is-danger': emailIsDanger, 'is-success': emailIsSuccess}">
                         <span class="icon is-small is-left"><font-awesome-icon icon="envelope" /></span>
                       </p>
+                      <p v-show="emailIsDanger" class="help is-danger"> {{ emailErrorMsg }} </p>
                     </div>
                   </div>
                 </div>
@@ -89,6 +90,7 @@
 <script>
   import FormInput from '@/components/common/FormInput'
   import Loader from '@/components/common/Loader'
+  import Validator from 'validator'
   import Logo from '@/components/common/Logo'
   export default {
     name: 'Signin',
@@ -113,11 +115,10 @@
       },
 
       emailIsValid: function () {
-        if (!this.emailIsSet || this.email.trim().length <= 0) {
-          this.emailErrorMsg = 'Debe ingresar su nombre'
+        if (!this.emailIsSet || !Validator.isEmail(this.email)) {
+          this.emailErrorMsg = 'Debe ingresar un correo válido'
           return false
         }
-        this.emailErrorMsg = null
         return true
       },
 
@@ -152,7 +153,7 @@
           .$store.dispatch('login_local', data)
           .then((response) => {
             if (response.success) {
-              this.$router.push({name: 'Dashboard', params: {user: response.user}})
+              this.$router.push({name: 'Dashboard'})
             } else {
               this.showBadLogin = true
             }

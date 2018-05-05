@@ -13,7 +13,8 @@ const config = {
 
   apiLoginGoogle: '/login/google',
   apiRegister: '/register',
-  apiLogin: '/login'
+  apiLogin: '/login',
+  apiUserBabies: '/users/{userId}/babies'
 }
 
 export default config

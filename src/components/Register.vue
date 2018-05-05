@@ -68,6 +68,7 @@
                           <font-awesome-icon icon="check"/>
                         </span>
                       </p>
+                      <p v-show="emailIsDanger" class="help is-danger"> {{ emailErrorMsg }} </p>
                     </div>
                   </div>
                 </div>
@@ -104,6 +105,7 @@
                       </p>
                     </div>
                   </div>
+                  <p v-show="passwordValidateIsDanger" class="help is-danger"> {{ passwordValidateErrMsg }} </p>
                 </div>
 
                 <div class="field is-grouped is-grouped-centered" style="margin-top: 30px;">
@@ -144,6 +146,8 @@
         password: null,
         passwordValidate: null,
         firstNameErrorMsg: null,
+        emailErrorMsg: null,
+        passwordValidateErrMsg: null,
         isLoading: false,
         isSubmitting: false
       }
@@ -183,6 +187,7 @@
       },
       emailIsValid: function () {
         if (!this.emailIsSet || !Validator.isEmail(this.email)) {
+          this.emailErrorMsg = 'Debe ingresar un correo válido'
           return false
         }
         return true
@@ -213,9 +218,13 @@
       },
       passwordValidateIsValid: function () {
         if (!this.passwordValidateIsSet || this.passwordValidate.trim().length <= 0) {
+          this.passwordValidateErrMsg = 'Las contraseñas no coinciden'
           return false
         }
-        if (this.password !== this.passwordValidate) return false
+        if (this.password !== this.passwordValidate) {
+          this.passwordValidateErrMsg = 'Las contraseñas no coinciden'
+          return false
+        }
         return true
       },
       passwordValidateIsSuccess: function () {

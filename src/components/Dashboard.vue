@@ -1,4 +1,29 @@
 <template>
+  <div class="box" v-show="!isLoading">
+    <page-title-nav  title="Inicio"/>
+    <div class="columns is-multiline">
+        <div class="column is-one-third">
+          <div class="card" v-for="baby in babies">
+            <header class="card-header">
+              <p class="card-header-title">{{ baby.name}}</p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                <p><strong>Edad: </strong> {{ currentAge(baby.bornDate) }} meses</p>
+                <p><strong>Peso: </strong> {{ baby.weightMeasurements[0] }} kgs</p>
+                <p><strong>Altura: </strong> {{ baby.heightMeasurements[0] }} cms</p>
+              </div>
+            </div>
+            <footer class="card-footer">
+              <a href="#" class="card-footer-item">Peso</a>
+              <a href="#" class="card-footer-item">Altura</a>
+            </footer>
+          </div>
+        </div>
+    </div>
+    <loader/>
+  </div>
+  <!--
   <div>
     <Navbar/>
 
@@ -8,7 +33,7 @@
         Bienvenido/a {{ currentUser.name }}
       </div>
       <div class="columns">
-        <div class="column is-one-third">
+        <div class="column is-one-third is-one-quarter-fullhd is-hidden-touch">
           <div class="container is-fluid">
             <div class="leftmenu">
               <aside class="box menu">
@@ -61,10 +86,10 @@
       </div>
     </section>
   </div>
-
+  -->
 </template>
 <script>
-  // Script donde se realiza los metodos de comunicación de la webapp
+  import PageTitleNav from '@/components/Page/TitleNav'
   import FormCheckbox from '@/components/common/FormCheckbox'
   import FormInput from '@/components/common/FormInput'
   import Calendar from '@/components/common/Calendar'
@@ -72,6 +97,14 @@
   import Loader from '@/components/common/Loader'
   import ConfirmModal from '@/components/common/ConfirmModal'
   import Navbar from '@/components/common/Navbar'
+
+  import Moment from 'moment'
+
+  import DashboardMeasurements from '@/components/Dashboard/DashboardMeasurements.vue'
+  import AdminMeasurementsWeightCard from '@/components/AdminMeasurements/AdminMeasurementsWeightCard'
+  import AdminMeasurementsHeightCard from '@/components/AdminMeasurements/AdminMeasurementsHeightCard'
+  import BabyNew from '@/components/BabyNew'
+
   export default {
     name: 'Dashboard',
 
@@ -80,17 +113,23 @@
       FormInput,
       Calendar,
       Today,
+      BabyNew,
+      PageTitleNav,
       ConfirmModal,
+      DashboardMeasurements,
+      AdminMeasurementsWeightCard,
+      AdminMeasurementsHeightCard,
       Navbar,
       Loader
     },
 
-    // Formato de la data, que se va a enviar al servidor.
     data () {
       return {
         showCalendar: false,
         showToday: true,
         currentUser: null,
+        isLoading: false,
+        babies: [],
         showWelcome: true
       }
     },
@@ -103,14 +142,30 @@
       viewToday: function () {
         this.showCalendar = false
         this.showToday = true
+      },
+      loadData: function () {
+        return this.getBabies()
+      },
+      getBabies: function () {
+        const data = {
+          userId: this.$store.getters.SESSION_GET_USER_ID
+        }
+        return this.$store.dispatch('babies_get', data)
+          .then((babies) => {
+            console.log('hay?')
+            if (babies.length < 1) {
+              console.log('no hay')
+              this.$router.push({name: 'BabyNew'})
+            }
+            this.babies = babies
+          })
+      },
+      currentAge: function (birthdate) {
+        return Math.round(-Moment(birthdate).diff(Moment(), 'months', true))
       }
     },
-
-    created () {
-      this.currentUser = this.$route.params.user
-      if (!this.currentUser) {
-        this.$router.push({name: 'Signin'})
-      }
+    created: function () {
+      return this.loadData()
     }
   }
 </script>
