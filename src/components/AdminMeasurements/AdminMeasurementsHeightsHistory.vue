@@ -236,10 +236,7 @@
     },
 
     created: function () {
-      this.redirectIfNotLogged({rolRequired: ['patient']})
-        .then(() => {
-          return this.loadData()
-        })
+
     }
   }
 </script>

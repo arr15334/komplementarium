@@ -2,13 +2,6 @@
   <div class="card" style="overflow: hidden">
     <div class="card-header">
       <p class="card-header-title">{{ name }}</p>
-
-      <a @click="toggleFavorite" class="card-header-icon" v-show="!onDashboard">
-                <span class="icon">
-                    <i class="fa fa-star-o" v-if="!favorite"></i>
-                    <i class="fa fa-star" v-else></i>
-                </span>
-      </a>
     </div>
 
     <div class="card-image" v-show="!isLoading && !isAddMeasure">
@@ -51,16 +44,12 @@
     </div>
 
     <div class="card-footer" v-show="!isLoading">
-      <a @click="removeCard" class="card-footer-item" v-show="!onDashboard">
-        <span class="icon has-text-black"><i class="fa fa-lg fa-minus"></i></span>
-      </a>
-
       <a @click="showContent" class="card-footer-item">
-        <span class="icon has-text-black"><i class="fa fa-lg fa-eye"></i></span>
+        <span class="icon has-text-black"><font-awesome-icon icon="eye" /></span>
       </a>
 
       <a @click="addMeasure" class="card-footer-item">
-        <span class="icon has-text-black"><i class="fa fa-lg fa-plus-circle"></i></span>
+        <span class="icon has-text-black"><font-awesome-icon icon="plus-square" /></i></span>
       </a>
     </div>
   </div>
@@ -68,7 +57,7 @@
 
 <script>
   import validator from 'validator'
-
+  import moment from 'moment'
   import BarChart from '@/components/common/BarChart'
   import FormInput from '@/components/common/FormInput'
   import Loader from '@/components/common/Loader'
@@ -95,9 +84,9 @@
         type: String,
         default: 'height'
       },
-      favorite: {
-        type: Boolean,
-        default: false
+      babyId: {
+        type: String,
+        default: ''
       },
       onDashboard: {
         type: Boolean,
@@ -108,14 +97,21 @@
     data () {
       return {
         isLoading: true,
-        heights: [],
         isAddMeasure: false,
         chartData: null,
         chartOptions: {
           responsive: true,
-          maintainAspectRatio: true
+          maintainAspectRatio: true,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
         },
         height: null,
+        heights: [],
         heightErrorMsg: null,
         isSubmitting: false
       }
@@ -147,6 +143,11 @@
 
       heightIsDanger: function () {
         return (this.heightIsSet && !this.heightIsValid)
+      },
+
+      babyIdIsSet: function () {
+        if (this.babyId !== null) return this.babyId
+        return false
       }
     },
 
@@ -161,21 +162,21 @@
           })
           .catch(err => {
             this.isLoading = false
-            this.$store.dispatch('feedback_process_err', {err: err, expire: true})
+            console.log(err)
           })
       },
 
       getHeights: function () {
         const data = {
-          userId: this.$store.getters.SESSION_GET_USER_CURRENT_ID
+          userId: this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session'),
+          babyId: this.babyId
         }
 
         return this
-          .$store.dispatch('user_measurements_heights_get', data)
-          .then(userHeights => {
-            this.heights = userHeights.data || []
-
-            if (this.heights.length > 0) {
+          .$store.dispatch('baby_heights_get', data)
+          .then((heights) => {
+            if (heights.length > 0) {
+              this.heights = heights
               this.isAddMeasure = false
               this.setChartData()
             } else {
@@ -192,31 +193,24 @@
         }
 
         const data = []
-        for (let i = this.heights.length - 1; i >= 0; i--) {
-          const measure = this.heights[i]
-          chartData.labels.push(measure.date.format('D-M'))
+        for (const height of this.heights) {
+          const measure = height
+          const date = measure.date || moment()
+          chartData.labels.push(moment(date).format('D-M'))
           data.push(measure.height)
         }
 
         chartData.datasets.push(
           {
-            label: this.name,
+            label: this.name + '(cms)',
             data: data,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            backgroundColor: 'rgba(74, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1
           }
         )
 
         this.chartData = chartData
-      },
-
-      toggleFavorite: function () {
-        this.$emit('toggleFavorite', this.measurementId, this.favorite)
-      },
-
-      removeCard: function () {
-        this.$emit('removeCard', this.measurementId)
       },
 
       showContent: function () {
@@ -246,11 +240,12 @@
         this.isSubmitting = true
 
         const data = {
-          userId: this.$store.getters.SESSION_GET_USER_CURRENT_ID,
+          userId: this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session'),
+          babyId: this.babyId,
           height: this.height.trim()
         }
 
-        let dispatch = 'user_measurements_heights_item_add'
+        let dispatch = 'baby_heights_item_add'
 
         return this
           .$store.dispatch(dispatch, data)
@@ -261,7 +256,8 @@
           })
           .catch(err => {
             this.isSubmitting = false
-            this.$store.dispatch('feedback_process_err', {err: err, expire: true})
+            console.log(err)
+            // this.$store.dispatch('feedback_process_err', {err: err, expire: true})
           })
       },
 
@@ -277,6 +273,7 @@
     },
 
     created: function () {
+      console.log('creado')
       return this.loadData()
     }
   }

@@ -16,7 +16,7 @@
             </div>
             <!-- form -->
             <form @submit.prevent="submitForm" novalidate>
-              <div class="box">
+              <div class="box signinbox">
                 <div class="field zenter">
                   <label class="label">Correo electrónico</label>
                   <div class="field-body">
@@ -51,7 +51,7 @@
 
                 <div class="field is-grouped is-grouped-centered" style="margin-top: 30px;">
                   <button type="submit"
-                          class="button is-primary"
+                          class="button is-info"
                           :class="{'is-loading': isSubmitting}"
                           v-on:click="">Iniciar sesión
                   </button>
@@ -84,6 +84,18 @@
     </div>
   </div>
     <loader :is-loading="isLoading"/>
+    <div class="hero-foot">
+      <footer class="footer">
+        <div class="container is-fluid">
+          <div class="content has-text-centered">
+            <p>
+              _komplementarium 2018 |
+              <router-link :to="{name: ''}">T&eacute;rminos y Condiciones</router-link>
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
   </section>
 </template>
 
@@ -140,6 +152,10 @@
             console.log(response)
           })
       },
+      checkIfLoggedIn: function () {
+        const userId = this.$cookie.get('user_session') || null
+        return userId
+      },
       submitForm: function (e) {
         if (!this.validForm()) {
           e.preventDefault()
@@ -153,6 +169,7 @@
           .$store.dispatch('login_local', data)
           .then((response) => {
             if (response.success) {
+              this.$cookie.set('user_session', response.user._id)
               this.$router.push({name: 'Dashboard'})
             } else {
               this.showBadLogin = true
@@ -164,6 +181,12 @@
       },
       validForm: function () {
         return true
+      }
+    },
+    created: function () {
+      const userId = this.checkIfLoggedIn()
+      if (userId) {
+        this.$router.push({name: 'Dashboard'})
       }
     }
   }
@@ -177,6 +200,11 @@
 #google_btn {
   background-color: #dd381d;
   color: #fff;
+}
+
+.signinbox {
+  background-color: rgba(30, 100, 200, 0.45);
+  color: white;
 }
 
 .zenter {

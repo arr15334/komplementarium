@@ -1,32 +1,21 @@
 <template>
   <div>
     <div v-show="!isLoading">
-      <div class="columns is-multiline">
-        <div class="column is-half" v-for="userMeasurement in userMeasurements" :key="userMeasurement.id"
-             v-if="userMeasurement.isEnabled && validType(userMeasurement.getType())">
-          <admin-measurements-height-card
-            v-if="userMeasurement.getType() === 'height'"
-            :name="getLabel(userMeasurement.getType())"
-            :measurement-id="userMeasurement.measurement.id"
-            :type="userMeasurement.getType()"
-            :favorite="userMeasurement.isFavorite"
-            @toggleFavorite="toggleFavorite"
-            @removeCard="confirmRemove"/>
-
-          <admin-measurements-weight-card
-            v-else-if="userMeasurement.getType() === 'weight'"
-            :name="getLabel(userMeasurement.getType())"
-            :measurement-id="userMeasurement.measurement.id"
-            :type="userMeasurement.getType()"
-            :favorite="userMeasurement.isFavorite"
-            @toggleFavorite="toggleFavorite"
-            @removeCard="confirmRemove"/>
-        </div>
-
-        <div v-if="hasToAdd" class="column is-half">
-          <admin-measurements-add-card
-            :measurements="measurementsToAdd"
-            @addItem="addItem"/>
+      <div class="box" v-for="baby in babies">
+        <h1 class="title">{{baby.name}}</h1>
+        <div class="columns is-multiline">
+          <div class="column is-half">
+            <admin-measurements-height-card
+              :name="'Altura'"
+              :type="'height'"
+              :babyId="baby.id"/>
+          </div>
+          <div class="column is-half">
+            <admin-measurements-weight-card
+              :name="'Peso'"
+              :type="'weight'"
+              :babyId="baby.id"/>
+          </div>
         </div>
       </div>
     </div>
@@ -66,40 +55,17 @@
 
     data () {
       return {
-        isLoading: true,
+        isLoading: false,
         userMeasurements: [],
+        babies: [],
+        heightMeasurements: [],
+        weightMeasurements: [],
         showConfirm: false,
         toRemove: null
       }
     },
 
     computed: {
-      measurementsToAdd: function () {
-        const toAdd = []
-
-        for (let i = 0; i < this.userMeasurements.length; i++) {
-          const userMeasurement = this.userMeasurements[i]
-
-          if (!userMeasurement.isEnabled) {
-            const label = this.getLabel(userMeasurement.getType())
-
-            if (label.length > 0) {
-              toAdd.push(
-                {
-                  value: userMeasurement.measurement.id,
-                  text: label,
-                  type: userMeasurement.getType()
-                }
-              )
-            }
-          }
-        }
-        return toAdd
-      },
-
-      hasToAdd: function () {
-        return (this.measurementsToAdd.length > 0)
-      }
     },
 
     methods: {
@@ -119,13 +85,13 @@
 
       getUserMeasurements: function () {
         const data = {
-          userId: this.$store.getters.SESSION_GET_USER_CURRENT_ID
+          userId: this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session')
         }
-
+        this.babies = []
         return this
-          .$store.dispatch('user_measurements_get', data)
-          .then(userMeasurements => {
-            this.userMeasurements = userMeasurements || []
+          .$store.dispatch('babies_get', data)
+          .then((response) => {
+            this.babies = response
           })
       },
 
@@ -133,29 +99,10 @@
         switch (type) {
           case 'height':
           case 'weight':
-          case 'blood-glucose':
-          case 'blood-pressure':
             return true
           default:
             return false
         }
-      },
-
-      toggleFavorite: function (measurementId, currentFavorite) {
-        const data = {
-          userId: this.$store.getters.SESSION_GET_USER_CURRENT_ID,
-          enabled: this.getEnabled(),
-          favorites: this.getFavorites(measurementId, !currentFavorite)
-        }
-
-        return this
-          .$store.dispatch('user_measurements_item_update', data)
-          .then(() => {
-            return this.loadData()
-          })
-          .catch(err => {
-            this.$store.dispatch('feedback_process_err', {err: err, expire: true})
-          })
       },
 
       confirmRemove: function (measurementId) {
@@ -213,12 +160,6 @@
           case 'weight':
             return 'Peso'
 
-          case 'blood-pressure':
-            return 'Presión Sanguínea'
-
-          case 'blood-glucose':
-            return 'Glucosa en Sangre'
-
           default:
             return ''
         }
@@ -266,6 +207,11 @@
     },
 
     created: function () {
+      this.isLoading = true
+      return this.loadData()
+        .then(() => {
+          this.isLoading = false
+        })
       /*
       this.redirectIfNotLogged({rolRequired: ['patient']})
         .then(() => {

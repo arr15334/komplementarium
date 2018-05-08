@@ -1,5 +1,6 @@
 import config from '@/settings/config'
 import api from '@/store/utils/api'
+import Baby from '@/store/models/Baby'
 
 const state = {
   userId: ''
@@ -87,10 +88,13 @@ const actions = {
       api
         .post(url, params)
         .then((response) => {
-          const userId = response.data.user._id
-          context.commit('SESSION_UPDATE', {
-            userId: userId
-          })
+          const responseData = response.data
+          if (responseData.success) {
+            const userId = response.data.user._id
+            context.commit('SESSION_UPDATE', {
+              userId: userId
+            })
+          }
           resolve(response.data)
         })
         .catch(err => {
@@ -111,9 +115,16 @@ const actions = {
       api
         .get(url)
         .then((response) => {
+          // console.log(response)
           const data = response.data || {}
           const userData = data.user || {}
-          const babies = userData.babies || []
+          // const babies = userData.babies || []
+          let babies = []
+          for (const babyData of userData.babies) {
+            let newBaby = new Baby()
+            newBaby.initWithData(babyData)
+            babies.push(newBaby)
+          }
           resolve(babies)
         })
         .catch(err => {
@@ -156,6 +167,109 @@ const actions = {
         })
         .catch(err => {
           reject(err)
+        })
+    })
+  },
+  baby_heights_get (context, data = {}) {
+    const userId = data.userId || ''
+    const babyId = data.babyId || ''
+
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiUserBabyHeights
+    url = url.replace('{userId}', userId)
+    url = url.replace('{babyId}', babyId)
+    console.log(url)
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          console.log(response)
+          const resData = response.data || {}
+          const heights = resData.heights || []
+          resolve(heights)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+  user_measurements_weights_get (context, data = {}) {
+    const userId = data.userId || ''
+    const babyId = data.babyId || ''
+
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiUserBabyWeights
+    url = url.replace('{userId}', userId)
+    url = url.replace('{babyId}', babyId)
+    console.log(url)
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          console.log(response)
+          const resData = response.data || {}
+          const weights = resData.weights || []
+          resolve(weights)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+  baby_weights_add (context, data = {}) {
+    const userId = data.userId || ''
+    const babyId = data.babyId || ''
+    const weightMeasure = data.weight || ''
+
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiUserBabyWeights
+    url = url.replace('{userId}', userId)
+    url = url.replace('{babyId}', babyId)
+
+    const params = {
+      'data': {
+        'weight_measurement': weightMeasure
+      }
+    }
+    console.log(url)
+    return new Promise((resolve, reject) => {
+      api.post(url, params)
+        .then((response) => {
+          console.log(response)
+          resolve()
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+  baby_heights_item_add (context, data = {}) {
+    const userId = data.userId || ''
+    const babyId = data.babyId || ''
+    const heightMeasurement = data.height || 0
+
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiUserBabyHeights
+    url = url.replace('{userId}', userId)
+    url = url.replace('{babyId}', babyId)
+    console.log(url)
+    const params = {
+      'data': {
+        'height_measurement': heightMeasurement
+      }
+    }
+
+    return new Promise((resolve, reject) => {
+      api.post(url, params)
+        .then((resp) => {
+          console.log(resp)
+          resolve()
         })
     })
   }

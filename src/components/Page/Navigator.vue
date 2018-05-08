@@ -142,8 +142,8 @@
       },
 
       logout: function () {
-        this.closeMenu()
-        this.$emit('logout')
+        this.$cookie.delete('user_session')
+        this.$router.push({name: 'home'})
       },
 
       closeMenu: function () {
@@ -152,7 +152,7 @@
     },
 
     created: function () {
-      this.profileIcon = '/static/imgs/profile.png'
+      this.profileIcon = '/static/imgs/logo-komplementarium.png'
       this.mainMenu = mainMenu
     },
     mounted () {

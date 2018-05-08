@@ -1,17 +1,17 @@
 <template>
-  <div class="box" v-show="!isLoading">
+  <div class="box">
     <page-title-nav  title="Inicio"/>
-    <div class="columns is-multiline">
+    <div class="columns is-multiline"  v-show="!isLoading" v-for="baby in babies">
         <div class="column is-one-third">
-          <div class="card" v-for="baby in babies">
+          <div class="card">
             <header class="card-header">
               <p class="card-header-title">{{ baby.name}}</p>
             </header>
             <div class="card-content">
               <div class="content">
                 <p><strong>Edad: </strong> {{ currentAge(baby.bornDate) }} meses</p>
-                <p><strong>Peso: </strong> {{ baby.weightMeasurements[0] }} kgs</p>
-                <p><strong>Altura: </strong> {{ baby.heightMeasurements[0] }} cms</p>
+                <p><strong>Peso: </strong> {{ baby.weightMeasurements[baby.weightMeasurements.length-1].weight }} kgs</p>
+                <p><strong>Altura: </strong> {{ baby.heightMeasurements[baby.heightMeasurements.length-1].height }} cms</p>
               </div>
             </div>
             <footer class="card-footer">
@@ -20,8 +20,11 @@
             </footer>
           </div>
         </div>
+        <div class="column">
+          <Today/>
+        </div>
     </div>
-    <loader/>
+    <loader :is-loading="isLoading"/>
   </div>
   <!--
   <div>
@@ -147,14 +150,13 @@
         return this.getBabies()
       },
       getBabies: function () {
+        const userId = this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session')
         const data = {
-          userId: this.$store.getters.SESSION_GET_USER_ID
+          userId: userId
         }
         return this.$store.dispatch('babies_get', data)
           .then((babies) => {
-            console.log('hay?')
             if (babies.length < 1) {
-              console.log('no hay')
               this.$router.push({name: 'BabyNew'})
             }
             this.babies = babies
@@ -165,7 +167,11 @@
       }
     },
     created: function () {
+      this.isLoading = true
       return this.loadData()
+        .then(() => {
+          this.isLoading = false
+        })
     }
   }
 </script>

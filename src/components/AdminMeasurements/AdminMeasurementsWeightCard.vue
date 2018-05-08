@@ -2,13 +2,6 @@
   <div class="card" style="overflow: hidden">
     <div class="card-header">
       <p class="card-header-title">{{ name }}</p>
-
-      <a @click="toggleFavorite" class="card-header-icon" v-show="!onDashboard">
-                <span class="icon">
-                    <i class="fa fa-star-o" v-if="!favorite"></i>
-                    <i class="fa fa-star" v-else></i>
-                </span>
-      </a>
     </div>
 
     <div class="card-image" v-show="!isLoading && !isAddMeasure">
@@ -51,16 +44,12 @@
     </div>
 
     <div class="card-footer" v-show="!isLoading">
-      <a @click="removeCard" class="card-footer-item" v-show="!onDashboard">
-        <span class="icon has-text-black"><i class="fa fa-lg fa-minus"></i></span>
-      </a>
-
       <a @click="showContent" class="card-footer-item">
-        <span class="icon has-text-black"><i class="fa fa-lg fa-eye"></i></span>
+        <span class="icon has-text-black"><font-awesome-icon icon="eye" /></span>
       </a>
 
       <a @click="addMeasure" class="card-footer-item">
-        <span class="icon has-text-black"><i class="fa fa-lg fa-plus-circle"></i></span>
+        <span class="icon has-text-black"><font-awesome-icon icon="plus-square" /></i></span>
       </a>
     </div>
   </div>
@@ -68,7 +57,7 @@
 
 <script>
   import validator from 'validator'
-
+  import moment from 'moment'
   import LineChart from '@/components/common/LineChart'
   import FormInput from '@/components/common/FormInput'
   import Loader from '@/components/common/Loader'
@@ -95,6 +84,10 @@
         type: String,
         default: 'weight'
       },
+      babyId: {
+        type: String,
+        default: ''
+      },
       favorite: {
         type: Boolean,
         default: false
@@ -113,7 +106,14 @@
         chartData: null,
         chartOptions: {
           responsive: true,
-          maintainAspectRatio: true
+          maintainAspectRatio: true,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
         },
         weight: null,
         weightErrorMsg: null,
@@ -167,13 +167,14 @@
 
       getWeights: function () {
         const data = {
-          userId: this.$store.getters.SESSION_GET_USER_CURRENT_ID
+          userId: this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session'),
+          babyId: this.babyId
         }
 
         return this
           .$store.dispatch('user_measurements_weights_get', data)
           .then(userWeights => {
-            this.weights = userWeights.data || []
+            this.weights = userWeights || []
 
             if (this.weights.length > 0) {
               this.isAddMeasure = false
@@ -192,9 +193,10 @@
         }
 
         const data = []
-        for (let i = this.weights.length - 1; i >= 0; i--) {
-          const measure = this.weights[i]
-          chartData.labels.push(measure.date.format('D-M'))
+        for (const weight of this.weights) {
+          const measure = weight
+          const date = measure.date || moment()
+          chartData.labels.push(moment(date).format('D-M'))
           data.push(measure.weight)
         }
 
@@ -202,12 +204,11 @@
           {
             label: this.name,
             data: data,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(235, 162, 54, 0.4)',
+            borderColor: 'rgba(235, 162, 54, 1)',
             borderWidth: 1
           }
         )
-
         this.chartData = chartData
       },
 
@@ -246,11 +247,12 @@
         this.isSubmitting = true
 
         const data = {
-          userId: this.$store.getters.SESSION_GET_USER_CURRENT_ID,
+          userId: this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session'),
+          babyId: this.babyId,
           weight: this.weight.trim()
         }
 
-        let dispatch = 'user_measurements_weights_item_add'
+        let dispatch = 'baby_weights_add'
 
         return this
           .$store.dispatch(dispatch, data)
@@ -261,7 +263,7 @@
           })
           .catch(err => {
             this.isSubmitting = false
-            this.$store.dispatch('feedback_process_err', {err: err, expire: true})
+            console.log(err)
           })
       },
 

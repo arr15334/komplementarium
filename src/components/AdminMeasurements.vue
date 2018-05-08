@@ -43,13 +43,6 @@
           }
         ]
       }
-    },
-
-    created: function () {
-      this.redirectIfNotLogged({rolRequired: ['patient']})
-        .then(() => {
-          this.getBreadcrumb()
-        })
     }
   }
 </script>

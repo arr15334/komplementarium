@@ -1,6 +1,5 @@
 <template>
   <div class="">
-    <h1 class="title">Menú de hoy</h1>
     <div class="box">
 
       <table class="table is-fullwidth is-striped">

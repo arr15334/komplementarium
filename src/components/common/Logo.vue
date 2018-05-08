@@ -3,7 +3,7 @@
     <div
       class="column is-8-mobile is-offset-2-mobile is-6-tablet is-offset-3-tablet is-4-desktop is-offset-4-desktop has-text-centered">
       <router-link :to="{name: 'Signin'}">
-        <img id="logo" src="../../assets/komplementarium-temp-logo.png" alt="KomplementariumLogo">
+        <img id="logo" src="../../../static/imgs/logo-komplementarium.png" alt="KomplementariumLogo">
       </router-link>
     </div>
   </div>

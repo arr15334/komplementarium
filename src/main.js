@@ -4,6 +4,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAnalytics from 'vue-analytics'
 import VueIntro from 'vue-introjs'
+import VueCookie from 'vue-cookie'
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import solid from '@fortawesome/fontawesome-free-solid'
@@ -32,6 +33,7 @@ if (analytics !== null && analytics.length > 0) {
 }
 Vue.use(vueEventCalendar, {locale: 'es'}) // locale can be 'zh' , 'en' , 'es', 'pt-br', 'ja', 'ko', 'fr', 'it', 'ru', 'de', 'vi', 'ua'
 Vue.use(VueIntro)
+Vue.use(VueCookie)
 /*
 miniToastr.init()
 function toast ({ title, message, type, timeout, cb }) {
