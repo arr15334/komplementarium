@@ -19,6 +19,15 @@ var babySchema = new mongoose.Schema({
         weight: Number,
         date: Date
       }
+    ],
+    diet: [
+      {
+        food: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Food"
+        },
+        date: Date
+      }
     ]
 });
 

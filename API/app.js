@@ -5,10 +5,14 @@ var express     = require("express"),
     passport    = require("passport"),
     LocalStrategy   =require("passport-local"),
     User        = require("./models/user"),
-    cors     = require('cors')
+    cors     = require('cors'),
+    seedDB      = require("./seeders/foodSeed")
 // require the routes
 var indexRoutes   = require("./routes/index");
 var userRoutes    = require("./routes/userActions")
+var foodRoutes    = require("./routes/foodRoutes")
+
+
 
 app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({extended: true}));
@@ -16,7 +20,7 @@ app.use(cors())
 mongoose.Promise = global.Promise;
 
 mongoose.connect("mongodb://siddhartha:engappsados@ds147589.mlab.com:47589/komplementarium");
-//seedDB();
+// seedDB();
 
 //===========
 // PASSPORT CONFIG
@@ -45,8 +49,11 @@ app.use(function(req, res, next){
 //  routes
 //====================================
 app.use(indexRoutes);
-app.use("/users", userRoutes)
+app.use("/food", foodRoutes);
+app.use("/users", userRoutes);
 //app.use("/campgrounds/:id/comments",commentsRoutes);
 //app.use("/campgrounds/",campgroundsRoutes);
 
-app.listen(3000);
+app.listen(3000, function() {
+  console.log("localhost:3000")
+});

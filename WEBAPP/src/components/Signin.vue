@@ -203,7 +203,7 @@
 }
 
 .signinbox {
-  background-color: rgba(30, 100, 200, 0.45);
+  background-color: rgba(30, 150, 250, 0.25);
   color: white;
 }
 
