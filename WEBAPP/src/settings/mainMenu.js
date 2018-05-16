@@ -41,6 +41,41 @@ const mainMenu = [
         introJs: 'Mide tus evaluaciones médicas.',
         url: '',
         places: ['left']
+      },
+      {
+        type: 'item',
+        name: 'Menú de hoy',
+        component: 'AdminMeasurements',
+        places: ['left']
+      }
+    ]
+  },
+  {
+    type: 'group',
+    name: 'Información extra',
+    places: ['left'],
+    perms: ['*'],
+    children: [
+      {
+        type: 'item',
+        name: 'Consejos',
+        component: 'BabyNew',
+        url: '',
+        places: ['left']
+      },
+      {
+        type: 'item',
+        name: 'Alergias',
+        component: 'BabyNew',
+        url: '',
+        places: ['left']
+      },
+      {
+        type: 'item',
+        name: 'Mitos y realidades',
+        component: 'BabyNew',
+        url: '',
+        places: ['left']
       }
     ]
   }
