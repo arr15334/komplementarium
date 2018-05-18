@@ -209,10 +209,10 @@
           weight: weight * 1,
           height: height * 1,
           gender: gender + '',
-          userId: this.$store.getters.SESSION_GET_USER_ID
+          userId: this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session')
         }
         let data = {
-          userId: this.$store.getters.SESSION_GET_USER_ID,
+          userId: this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session'),
           baby: baby
         }
         return this.$store.dispatch('baby_new', data)
@@ -247,9 +247,10 @@
         }
         for (const baby of this.babys) {
           let data = {
-            userId: this.$store.getters.SESSION_GET_USER_ID,
+            userId: this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session'),
             baby: baby
           }
+          console.log(data)
           return this.$store.dispatch('baby_new', data)
         }
       },

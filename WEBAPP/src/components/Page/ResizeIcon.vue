@@ -1,6 +1,6 @@
 <template>
   <div class="has-text-right">
-        <span class="icon" v-intro="'Maximiza la pantalla.'">
+        <span class="icon">
             <i v-if="isWindowNormal" @click="toggleMax" class="fa fa-window-maximize"></i>
             <i v-else @click="toggleRestore" class="fa fa-window-restore"></i>
         </span>

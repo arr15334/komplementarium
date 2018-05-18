@@ -15,7 +15,7 @@
                :to="{name: component}"
                @click.native="clickItem"
                :target="hasTarget ? target: '_self'">
-    <span v-if="hasIcon" class="icon"><i class="fa" :class="iconName"></i>&nbsp;</span>
+    <span v-if="hasIcon" class="icon"> <font-awesome-icon icon="home"/>&nbsp;</span>
     {{ name }}
   </router-link>
 
@@ -24,7 +24,7 @@
      :href="url"
      @click="clickItem"
      :target="hasTarget ? target: '_self'">
-    <span v-if="hasIcon" class="icon"><i class="fa" :class="iconName"></i>&nbsp;</span>
+    <span v-if="hasIcon" class="icon"> <font-awesome-icon icon="home"/>&nbsp;</span>
     {{ name }}
   </a>
 </template>

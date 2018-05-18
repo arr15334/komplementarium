@@ -4,10 +4,20 @@
     <div class="columns is-multiline"  v-show="!isLoading" v-for="baby in babies">
         <div class="column is-one-third">
           <div class="card">
-            <header class="card-header">
-              <p class="card-header-title">{{ baby.name}}</p>
-            </header>
+            <!-- <header class="card-header">
+              <p class="card-header-title">{{baby.name}}</p>
+            </header> -->
             <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="../assets/baby.png" alt="Placeholder">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">{{baby.name}}</p>
+                </div>
+              </div>
               <div class="content">
                 <p><strong>Edad: </strong> {{ currentAge(baby.bornDate) }} meses</p>
                 <p><strong>Peso: </strong> {{ baby.weightMeasurements[baby.weightMeasurements.length-1].weight }} kgs</p>
@@ -145,6 +155,10 @@
       viewToday: function () {
         this.showCalendar = false
         this.showToday = true
+      },
+      getImage: function (gender) {
+        console.log(gender)
+        return gender
       },
       loadData: function () {
         return this.getBabies()

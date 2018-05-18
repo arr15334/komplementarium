@@ -9,6 +9,7 @@ const mainMenu = [
         type: 'item',
         name: 'Dashboard',
         component: 'Dashboard',
+        introJs: 'Página principal, donde puedes ver el menú del día',
         url: '',
         places: ['left']
       }
@@ -30,6 +31,7 @@ const mainMenu = [
       {
         type: 'item',
         name: 'Ajustes',
+        introJs: 'Guarda y edita los datos de tus hijos/as',
         component: 'BabyNew',
         url: '',
         places: ['left']
@@ -38,14 +40,15 @@ const mainMenu = [
         type: 'item',
         name: 'Mediciones',
         component: 'AdminMeasurements',
-        introJs: 'Mide tus evaluaciones médicas.',
+        introJs: 'Lleva las mediciones de tus hijos/as',
         url: '',
         places: ['left']
       },
       {
         type: 'item',
         name: 'Menú de hoy',
-        component: 'AdminMeasurements',
+        introJs: 'Decide qué alimentos darles, según el mes de edad',
+        component: 'Menu',
         places: ['left']
       }
     ]
@@ -59,20 +62,15 @@ const mainMenu = [
       {
         type: 'item',
         name: 'Consejos',
-        component: 'BabyNew',
+        introJs: 'Conoce más sobre cómo puedes alimentarlos mejor',
+        component: 'Advices',
         url: '',
         places: ['left']
       },
       {
         type: 'item',
         name: 'Alergias',
-        component: 'BabyNew',
-        url: '',
-        places: ['left']
-      },
-      {
-        type: 'item',
-        name: 'Mitos y realidades',
+        introJs: 'Lee información importante para prevenir alergias',
         component: 'BabyNew',
         url: '',
         places: ['left']

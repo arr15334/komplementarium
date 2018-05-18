@@ -13,7 +13,7 @@
           <div class="column is-8-tablet is-offset-2-tablet is-6-desktop is-offset-3-desktop">
             <!-- form -->
             <form @submit.prevent="submitForm" novalidate>
-              <div class="box">
+              <div class="box signinbox">
 
                 <!-- Nombre -->
                 <div class="field zenter">

@@ -28,62 +28,18 @@
 
     <div class="navbar-menu" :class="{'is-active': isNavBarMenuActive}">
       <div class="navbar-start">
-        <NavigatorMenuItem v-for="(item, key) in mainMenu" :key="key" :item="item"
+        <NavigatorMenuItem v-for="(item, key) in mainMenu" :key="key" :item="item" 
                            @click.native="closeMenu"/>
       </div>
 
       <div class="navbar-end">
         <!-- TODO: Display real notifications -->
         <!-- notifications -->
-        <div v-if="false" id="notifications" class="navbar-item has-dropdown is-hoverable is-hidden-touch">
-          <a class="navbar-link">
-                        <span class="icon">
-                            <i class="fa"
-                               :class="{'fa-bell-o': !haveNotifications, 'has-text-primary fa-bell': haveNotifications}"></i>
-                        </span>
-          </a>
 
-          <div class="navbar-dropdown is-right">
-            <a class="navbar-item  is-hidden-touch" href="/2017/08/03/list-of-tags/">
-              <div class="navbar-content">
-                <p>
-                  <small class="has-text-info">03 May 2017</small>
-                </p>
-                <p>New feature: list of tags</p>
-              </div>
-            </a>
-            <a class="navbar-item" href="/2017/08/03/list-of-tags/">
-              <div class="navbar-content">
-                <p>
-                  <small class="has-text-info">03 May 2017</small>
-                </p>
-                <p>New feature: list of tags</p>
-              </div>
-            </a>
-            <a class="navbar-item" href="/2017/08/03/list-of-tags/">
-              <div class="navbar-content">
-                <p>
-                  <small class="has-text-info">03 May 2017</small>
-                </p>
-                <p>New feature: list of tags</p>
-              </div>
-            </a>
-
-            <hr class="navbar-divider">
-
-            <router-link class="navbar-item"
-                         :to="{name: 'Notifications'}"
-                         @click.native="closeMenu">
-              <strong class="has-text-info">Ver Todas las Notificaciones</strong>
-            </router-link>
-          </div>
-        </div>
 
         <!-- account -->
         <div id="account" class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link" v-intro-if="route === 1"
-             v-intro="'<strong>PERFIL</strong><br>Edita tu perfil o ingresa a tus otros perfiles.'"
-             v-intro-position="'top'" v-intro-step="1">
+          <a class="navbar-link">
             <span class="is-hidden-desktop">Cuenta</span>
 
             <figure class="image is-24x24 is-hidden-touch">
@@ -102,6 +58,11 @@
 
             <!-- TODO: ReAdd separator -->
             <hr v-if="false" class="navbar-divider">
+
+            <a class="navbar-item" @click="showIntro">
+              <span class="icon"><font-awesome-icon icon="question-circle"/>&nbsp;</span>
+              Mostrar ayuda
+            </a>
 
             <a class="navbar-item" @click="logout">
               <span class="icon"><font-awesome-icon icon="sign-out-alt"/>&nbsp;</span>
@@ -144,6 +105,16 @@
       logout: function () {
         this.$cookie.delete('user_session')
         this.$router.push({name: 'home'})
+      },
+
+      showIntro: function () {
+        this.$intro().setOptions({
+          'skipLabel': 'Salir',
+          'doneLabel': 'Terminar',
+          'prevLabel': 'Anterior',
+          'nextLabel': 'Siguiente'
+        }).start()
+        this.$intro().showHints()
       },
 
       closeMenu: function () {

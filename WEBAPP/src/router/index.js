@@ -19,6 +19,9 @@ import AdminMeasurementsHeights from '@/components/AdminMeasurements/AdminMeasur
 import AdminMeasurementsHeightsHistory from '@/components/AdminMeasurements/AdminMeasurementsHeightsHistory'
 import AdminMeasurementsHeightsItem from '@/components/AdminMeasurements/AdminMeasurementsHeightsItem'
 
+import Menu from '@/components/Menu'
+import Advices from '@/components/Advices'
+
 Vue.use(Router)
 
 export default new Router(
@@ -61,26 +64,36 @@ export default new Router(
             component: BabyNew
           },
           {
-            path: 'measurements',
+            path: '/menu',
+            name: 'Menu',
+            component: Menu
+          },
+          {
+            path: '/consejos',
+            name: 'Advices',
+            component: Advices
+          },
+          {
+            path: 'mediciones',
             name: 'AdminMeasurements',
             redirect: {name: 'AdminMeasurementsHistory'},
             component: AdminMeasurements,
             children: [
               {
-                path: 'history',
+                path: 'historial',
                 name: 'AdminMeasurementsHistory',
                 component: AdminMeasurementsHistory
               }
             ]
           },
           {
-            path: 'measurements/weights',
+            path: 'mediciones/peso',
             name: 'AdminMeasurementsWeights',
             redirect: {name: 'AdminMeasurementsWeightsHistory'},
             component: AdminMeasurementsWeights,
             children: [
               {
-                path: 'history',
+                path: 'historial',
                 name: 'AdminMeasurementsWeightsHistory',
                 component: AdminMeasurementsWeightsHistory
               },
@@ -92,13 +105,13 @@ export default new Router(
             ]
           },
           {
-            path: 'measurements/heights',
+            path: 'mediciones/altura',
             name: 'AdminMeasurementsHeights',
             redirect: {name: 'AdminMeasurementsHeightsHistory'},
             component: AdminMeasurementsHeights,
             children: [
               {
-                path: 'history',
+                path: 'historial',
                 name: 'AdminMeasurementsHeightsHistory',
                 component: AdminMeasurementsHeightsHistory
               },

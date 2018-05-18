@@ -24,4 +24,22 @@ export default class BabyMeasurement {
     this.updated = data.updatedAt ? moment(data.updatedAt) : null
     this.created = data.createdAt ? moment(data.createdAt) : null
   }
+
+  getAge () {
+    return Math.round(-moment(this.bornDate).diff(moment(), 'months', true))
+  }
+
+  getCalories (age) {
+    if (age < 6) {
+      return 0
+    } else if (age <= 8) {
+      return 200
+    } else if (age <= 11) {
+      return 300
+    } else if (age <= 23) {
+      return 550
+    } else {
+      return 1000
+    }
+  }
 }
