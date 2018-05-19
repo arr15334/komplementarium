@@ -1,5 +1,6 @@
 import config from '@/settings/config'
 import api from '@/store/utils/api'
+import Baby from '@/store/models/Baby'
 
 const state = {}
 
@@ -28,27 +29,53 @@ const actions = {
     })
   },
 
-  execute_query (context, data = {}) {
+  get_baby (context, data = {}) {
     const env = config.env
     const apiRoot = config[env].apiRoot
 
-    const query = data.sqlQuery || ''
-
-    let url = apiRoot + config.apiQuery
-
-    const params = {
-      'sql_query': query
-    }
+    const babyId = data.babyId || ''
+    let url = apiRoot + config.apiBabies
+    url = url.replace('{babyId}', babyId)
 
     return new Promise((resolve, reject) => {
-      api
-        .post(url, params)
-        .then(response => {
-          resolve(response)
+      api.get(url)
+        .then((response) => {
+          const data = response.data
+          let baby = new Baby()
+          baby.initWithData(data)
+          resolve(baby)
         })
         .catch(err => {
           reject(err)
         })
+    })
+  },
+
+  edit_baby (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    const babyId = data.babyId || ''
+    let url = apiRoot + config.apiBabies
+    url = url.replace('{babyId}', babyId)
+
+    const name = data.name || ''
+    const birthdate = data.birthdate || ''
+    const gender = data.gender || 'M'
+
+    let params = {
+      'name': name,
+      'birthdate': birthdate,
+      'gender': gender
+    }
+
+    return new Promise((resolve, reject) => {
+      api.put(url, params)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data)
+        })
+        .catch(err => reject(err))
     })
   }
 }

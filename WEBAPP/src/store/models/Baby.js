@@ -5,7 +5,7 @@ export default class BabyMeasurement {
     this.id = ''
     this.name = ''
     this.bornDate = ''
-    this.gender = ''
+    this.gender = false
     this.heightMeasurements = []
     this.weightMeasurements = []
 
@@ -17,7 +17,7 @@ export default class BabyMeasurement {
     this.id = data._id || ''
     this.name = data.name || ''
     this.bornDate = data.bornDate || null
-    this.gender = data.gender || ''
+    this.gender = data.gender || false
     this.heightMeasurements = data.heightMeasurements || []
     this.weightMeasurements = data.weightMeasurements || []
 
@@ -41,5 +41,19 @@ export default class BabyMeasurement {
     } else {
       return 1000
     }
+  }
+
+  getGender () {
+    if (this.gender) {
+      return 'Masculino'
+    } else {
+      return 'Femenino'
+    }
+  }
+
+  getBirthdate () {
+    console.log(this.bornDate)
+    moment.locale('es')
+    return moment(this.bornDate).format('DD [de] MMMM')
   }
 }

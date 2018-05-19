@@ -14,6 +14,7 @@ const config = {
   apiLoginGoogle: '/login/google',
   apiRegister: '/register',
   apiLogin: '/login',
+  apiBabies: '/babys/{babyId}',
   apiUserBabies: '/users/{userId}/babies',
   apiUserBabyHeights: '/users/{userId}/babies/{babyId}/heights',
   apiUserBabyWeights: '/users/{userId}/babies/{babyId}/weights'

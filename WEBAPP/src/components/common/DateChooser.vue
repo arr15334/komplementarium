@@ -20,7 +20,7 @@
            :class="{ 'is-success': isSuccess, 'is-danger': isDanger }"
            :disabled="isDisabled"
            @click="openCalendar">
-          <span class="icon"> <font-awesome-icon icon="calendar"/> </span>
+          <span class="icon"> <font-awesome-icon icon='calendar' /> </span>
         </a>
 
         <p class="help is-danger" v-if="isDanger">{{ errorMsg }}</p>

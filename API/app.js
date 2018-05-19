@@ -11,6 +11,7 @@ var express     = require("express"),
 var indexRoutes   = require("./routes/index");
 var userRoutes    = require("./routes/userActions")
 var foodRoutes    = require("./routes/foodRoutes")
+var babyRoutes    = require("./routes/babyRoutes")
 
 
 
@@ -51,6 +52,7 @@ app.use(function(req, res, next){
 app.use(indexRoutes);
 app.use("/food", foodRoutes);
 app.use("/users", userRoutes);
+app.use("/babys", babyRoutes);
 //app.use("/campgrounds/:id/comments",commentsRoutes);
 //app.use("/campgrounds/",campgroundsRoutes);
 

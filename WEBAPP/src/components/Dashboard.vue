@@ -116,7 +116,7 @@
   import DashboardMeasurements from '@/components/Dashboard/DashboardMeasurements.vue'
   import AdminMeasurementsWeightCard from '@/components/AdminMeasurements/AdminMeasurementsWeightCard'
   import AdminMeasurementsHeightCard from '@/components/AdminMeasurements/AdminMeasurementsHeightCard'
-  import BabyNew from '@/components/BabyNew'
+  // import Babys from '@/components/Babys'
 
   export default {
     name: 'Dashboard',
@@ -126,7 +126,7 @@
       FormInput,
       Calendar,
       Today,
-      BabyNew,
+      // BabyNew,
       PageTitleNav,
       ConfirmModal,
       DashboardMeasurements,

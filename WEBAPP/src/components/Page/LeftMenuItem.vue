@@ -12,7 +12,7 @@
        :class="{'is-active': isActive}"
        :href="url"
        :target="hasTarget ? target: '_self'">
-      <span v-if="hasIcon" class="icon"><i class="fa" :class="iconName"></i>&nbsp;</span>
+      <span v-if="hasIcon" class="icon"> <font-awesome-icon :icon="iconName"/> &nbsp;</span>
       {{ name }}
     </a>
 
@@ -77,7 +77,7 @@
       },
 
       iconName: function () {
-        return 'fa-' + this.icon
+        return 'fas-' + this.icon
       },
 
       useComponent: function () {
@@ -118,7 +118,11 @@
         }
 
         const name = this.$route.name || ''
-        return name.includes(this.component)
+        console.log('--')
+        const component = this.component.toLowerCase()
+        const route = this.$route.fullPath
+
+        return route.includes(component) || name.includes(this.component)
       }
     },
     mounted () {

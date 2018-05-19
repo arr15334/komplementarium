@@ -19,7 +19,7 @@
                                :is-danger="firstNameIsDanger"
                                :error-msg="firstNameErrorMsg"/>
                     <date-chooser label="Fecha de nacimiento" v-model="birthdate"/>
-
+                    <p>{{birthdate}}</p>
                     <div class="field is-horizontal">
                       <div class="field-label is-small">
                         <label class="label">Sexo</label>
@@ -87,11 +87,6 @@
 
                 <span class="tag is-success" v-for="baby in babys"> {{ baby.name }}
                   <button class="delete is-small" v-on:click="removeBaby(baby)"></button> </span>
-                <div style="margin-top: 30px;">
-                  <button class="button is-primary" v-on:click="addBaby">
-                    <span class="icon" style="margin-right: 2px;"> <font-awesome-icon icon="plus"/> </span>
-                     Agregar </button>
-                </div>
                 <div class="field is-grouped is-grouped-centered">
                   <div class="control">
                     <button type="submit" class="button is-primary" v-on:click="submitForm">¡Listo!</button>
@@ -113,6 +108,7 @@
   import Logo from '@/components/common/Logo'
   import DateChooser from '@/components/common/DateChooser'
   import FormSelectWithSearch from '@/components/common/FormSelectWithSearch'
+  import Moment from 'moment'
 
   import Validator from 'validator'
   export default {
@@ -126,6 +122,7 @@
     },
     data () {
       return {
+        babyId: null,
         firstName: null,
         birthdate: null,
         heightUnit: 'cm',
@@ -137,7 +134,8 @@
         babys: [],
         genders: [],
         isLoading: false,
-        isSubmitting: false
+        isSubmitting: false,
+        isEdit: false
       }
     },
     computed: {
@@ -197,6 +195,24 @@
       }
     },
     methods: {
+      getBaby: function () {
+        const params = this.$route.params || ''
+        this.babyId = params.baby || null
+        if (!this.babyId) {
+          this.isEdit = false
+          return
+        }
+        this.isEdit = true
+        const data = {
+          babyId: this.babyId
+        }
+        return this.$store.dispatch('get_baby', data)
+          .then((baby) => {
+            this.firstName = baby.name
+            this.birthdate = Moment(baby.bornDate).format('DD MM YYYY')
+          })
+      },
+      /*
       addBaby: function () {
         const firstName = this.firstName || ''
         const bornDate = this.birthdate
@@ -221,6 +237,7 @@
             this.firstName = ''
           })
       },
+      */
       removeBaby: function (baby) {
         for (const b of this.babys) {
           if (b === baby) {
@@ -245,14 +262,34 @@
           e.preventDefault()
           return
         }
-        for (const baby of this.babys) {
-          let data = {
-            userId: this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session'),
-            baby: baby
-          }
-          console.log(data)
-          return this.$store.dispatch('baby_new', data)
+        let gender
+        if (this.gender === 'Masculino') gender = 'M'
+        else if (this.gender === 'Femenino') gender = 'F'
+        else gender = 'X'
+
+        const date = this.birthdate.split(' ')
+        const day = date[0]
+        const month = date[1]
+        const year = date[2]
+        const data = {
+          babyId: this.babyId,
+          userId: this.userId,
+          name: this.firstName,
+          birthdate: Moment(year + '-' + month + '-' + day),
+          gender: gender
         }
+        let dispatch
+        if (this.isEdit) dispatch = 'edit_baby'
+        else dispatch = 'baby_new'
+        console.log(data)
+
+        return this.$store.dispatch(dispatch, data)
+          .then((baby) => {
+            console.log(baby)
+          })
+          .catch(err => {
+            console.log(err)
+          })
       },
 
       validForm: function () {
@@ -260,6 +297,7 @@
       }
     },
     created: function () {
+      this.getBaby()
       return this.getGenders()
     }
   }

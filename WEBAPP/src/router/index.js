@@ -6,7 +6,7 @@ import LandingPage from '@/components/Landing'
 import Signin from '@/components/Signin'
 import Register from '@/components/Register'
 import Dashboard from '@/components/Dashboard'
-import BabyNew from '@/components/BabyNew'
+import Babys from '@/components/Babys'
 
 import Page from '@/components/Page'
 
@@ -21,6 +21,8 @@ import AdminMeasurementsHeightsItem from '@/components/AdminMeasurements/AdminMe
 
 import Menu from '@/components/Menu'
 import Advices from '@/components/Advices'
+import All from '@/components/Babys/All'
+import NewEdit from '@/components/Babys/NewEdit'
 
 Vue.use(Router)
 
@@ -59,9 +61,22 @@ export default new Router(
             component: Dashboard
           },
           {
-            path: '/baby',
-            name: 'BabyNew',
-            component: BabyNew
+            path: 'babys',
+            name: 'Babys',
+            redirect: {name: 'All'},
+            component: Babys,
+            children: [
+              {
+                path: 'all',
+                name: 'All',
+                component: All
+              },
+              {
+                path: 'edit',
+                name: 'NewEdit',
+                component: NewEdit
+              }
+            ]
           },
           {
             path: '/menu',

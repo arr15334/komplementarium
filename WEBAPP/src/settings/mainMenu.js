@@ -32,7 +32,7 @@ const mainMenu = [
         type: 'item',
         name: 'Ajustes',
         introJs: 'Guarda y edita los datos de tus hijos/as',
-        component: 'BabyNew',
+        component: 'Babys',
         url: '',
         places: ['left']
       },
