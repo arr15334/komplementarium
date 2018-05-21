@@ -132,18 +132,17 @@ const actions = {
         })
     })
   },
-  baby_new (context, data = {}) {
-    const baby = data.baby || {}
+  baby_new (context, baby = {}) {
     const name = baby.name || ''
     const gender = baby.gender || ''
     const weight = baby.weight || ''
     const height = baby.height || ''
-    const birthdate = baby.bornDate || ''
-    console.log(data)
+    const birthdate = baby.birthdate || ''
+    console.log(baby)
     const env = config.env
     const apiRoot = config[env].apiRoot
 
-    const userId = data.userId || baby.userId
+    const userId = baby.userId
 
     let url = apiRoot + config.apiUserBabies
     url = url.replace('{userId}', userId)
@@ -154,7 +153,7 @@ const actions = {
         'gender': gender,
         'weight': weight,
         'height': height,
-        'bornDate': new Date(birthdate)
+        'bornDate': birthdate
       }
     }
 

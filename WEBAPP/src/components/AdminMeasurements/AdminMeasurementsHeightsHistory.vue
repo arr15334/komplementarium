@@ -3,19 +3,19 @@
     <!-- global operations -->
     <div v-show="!isLoading" class="field is-grouped">
       <!-- add -->
-      <p class="control">
+      <!-- <p class="control">
         <router-link class="button is-primary"
                      :to="{name: 'AdminMeasurementsHeightsItem'}">
                     <span class="icon">
-                        <i class="fa fa-plus-circle"></i>
+                        <font-awesome-icon icon="plus-  circle"/>
                     </span>
           <span>Agregar</span>
         </router-link>
-      </p>
+      </p> -->
     </div>
 
     <!-- graph -->
-    <div v-if="!isLoading && userHeights.length > 0">
+    <div v-if="!isLoading && babyHeights.length > 0">
       <BarChart :width="640" :height="160" :chart-data="chartData" :options="chartOptions"/>
       <div class="content">
         <p>&nbsp;</p>
@@ -25,7 +25,7 @@
     <!-- history -->
     <div v-show="!isLoading" class="is-responsive">
       <!-- no info -->
-      <div class="content" v-if="userHeights.length <= 0">
+      <div class="content" v-if="babyHeights.length <= 0">
         <p class="has-text-centered">
           No ha ingresado ninguna medición de altura.
         </p>
@@ -41,14 +41,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="userHeight in userHeights" :key="userHeight.id">
-          <td>{{ userHeight.height }}</td>
-          <td>{{ userHeight.getDate() }}</td>
+        <tr v-for="babyHeight in babyHeights">
+          <td>{{ babyHeight.height }}</td>
+          <td>{{ babyHeight.date }}</td>
           <td style="text-align: right">
             <p class="field">
-              <a class="button" @click="confirmDelete(userHeight.id)">
+              <a class="button is-danger" @click="confirmDelete(babyHeight.id)">
                                 <span class="icon">
-                                    <i class="fa fa-trash-o"></i>
+                                    <font-awesome-icon icon="trash"/>
                                 </span>
               </a>
             </p>
@@ -77,6 +77,7 @@
   import BarChart from '@/components/common/BarChart'
   import Pagination from '@/components/common/Pagination'
   import Loader from '@/components/common/Loader'
+  import Moment from 'moment'
   import ConfirmModal from '@/components/common/ConfirmModal'
 
   export default {
@@ -97,12 +98,19 @@
       return {
         isLoading: true,
         currentPage: 1,
-        userHeights: [],
+        babyHeights: [],
         totalPages: 0,
         chartData: null,
         chartOptions: {
           responsive: true,
-          maintainAspectRatio: true
+          maintainAspectRatio: true,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
         },
         showConfirm: false,
         toDelete: null
@@ -112,18 +120,25 @@
     methods: {
       loadData: function () {
         this.isLoading = true
-
+        this.getBabyId()
         this.getCurrentPage()
 
         return this
-          .getUserHeights()
+          .getBabyHeights()
           .then(() => {
             this.isLoading = false
           })
           .catch(err => {
             this.isLoading = false
-            this.$store.dispatch('feedback_process_err', {err: err, expire: true})
+            console.log(err)
+            // this.$store.dispatch('feedback_process_err', {err: err, expire: true})
           })
+      },
+
+      getBabyId: function () {
+        const params = this.$route.params || {}
+        console.log(params)
+        this.babyId = params.baby
       },
 
       getCurrentPage: function () {
@@ -142,28 +157,31 @@
             name: 'AdminMeasurementsHeightsHistory',
             query: {
               page: page
+            },
+            params: {
+              baby: this.babyId
             }
           }
         )
       },
 
-      getUserHeights: function () {
+      getBabyHeights: function () {
         const data = {
-          userId: this.$store.getters.SESSION_GET_USER_CURRENT_ID,
-          pageNumber: this.currentPage
+          babyId: this.babyId,
+          pageNumber: this.currentPage - 1
         }
 
         return this
-          .$store.dispatch('user_measurements_heights_get', data)
-          .then(userHeights => {
-            this.userHeights = userHeights.data || []
-            this.totalPages = userHeights.totalPages || 0
+          .$store.dispatch('get_baby_heights', data)
+          .then(babyHeights => {
+            this.babyHeights = babyHeights.measurements || []
+            this.totalPages = babyHeights.total || 0
 
             if (this.currentPage !== 1 && this.currentPage > this.totalPages) {
               this.goToPage(this.totalPages)
             }
 
-            if (this.userHeights.length > 0) {
+            if (this.babyHeights.length > 0) {
               this.setChartData()
             } else {
               this.chartData = null
@@ -178,9 +196,10 @@
         }
 
         const data = []
-        for (let i = this.userHeights.length - 1; i >= 0; i--) {
-          const measure = this.userHeights[i]
-          chartData.labels.push(measure.date.format('D-M'))
+        for (let i = 0; i < this.babyHeights.length; i++) {
+          const measure = this.babyHeights[i]
+          chartData.labels.push(Moment(measure.date).format('D-M'))
+          this.babyHeights[i].date = Moment(measure.date).format('DD - MMMM - YYYY')
           data.push(measure.height)
         }
 
@@ -236,7 +255,7 @@
     },
 
     created: function () {
-
+      return this.loadData()
     }
   }
 </script>

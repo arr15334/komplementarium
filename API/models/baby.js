@@ -22,10 +22,12 @@ var babySchema = new mongoose.Schema({
     ],
     diet: [
       {
-        food: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Food"
-        },
+        food: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Food"
+          }
+        ],
         date: Date
       }
     ]

@@ -29,6 +29,51 @@ const actions = {
     })
   },
 
+  get_menu_today (context, data = {}) {
+    const babyId = data.babyId || ''
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiBabies
+    url = url.replace('{babyId}', babyId) + '/menu'
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          const foods = data.data || {}
+          resolve(foods)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+
+  save_today_menu (context, data = {}) {
+    const babyId = data.babyId || ''
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiBabies
+    url = url.replace('{babyId}', babyId) + '/menu/today'
+
+    const menu = data.menu || []
+
+    const params = {
+      'menu': menu
+    }
+
+    return new Promise((resolve, reject) => {
+      api.put(url, params)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data)
+        })
+        .catch(err => reject(err))
+    })
+  },
+
   get_baby (context, data = {}) {
     const env = config.env
     const apiRoot = config[env].apiRoot
@@ -71,6 +116,48 @@ const actions = {
 
     return new Promise((resolve, reject) => {
       api.put(url, params)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data)
+        })
+        .catch(err => reject(err))
+    })
+  },
+  delete_baby (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    const babyId = data.babyId || ''
+
+    let url = apiRoot + config.apiBabies
+    url = url.replace('{babyId}', babyId)
+
+    return new Promise((resolve, reject) => {
+      api.delete(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data)
+        })
+        .catch(err => reject(err))
+    })
+  },
+
+  get_baby_heights (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    const babyId = data.babyId || ''
+    const offset = data.pageNumber || null
+
+    let url = apiRoot + config.apiBabies
+    url = url.replace('{babyId}', babyId) + '/heights'
+
+    if (offset) {
+      url = url + '?page=' + offset
+    }
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
         .then((response) => {
           const data = response.data || {}
           resolve(data)

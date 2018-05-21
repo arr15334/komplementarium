@@ -2,9 +2,6 @@
         <div class="columns" v-show="!isLoading">
           <div class="column">
             <!-- form -->
-            <form>
-              <div class="box" style="padding-top: 5%;">
-                <h1 class="title">Ingrese los datos de su bebé</h1>
                 <form @submit.prevent="submitForm" novalidate>
                   <div class="box">
                     <FormInput ref="firstfield"
@@ -19,7 +16,6 @@
                                :is-danger="firstNameIsDanger"
                                :error-msg="firstNameErrorMsg"/>
                     <date-chooser label="Fecha de nacimiento" v-model="birthdate"/>
-                    <p>{{birthdate}}</p>
                     <div class="field is-horizontal">
                       <div class="field-label is-small">
                         <label class="label">Sexo</label>
@@ -66,7 +62,6 @@
                         <label class="label">Altura</label>
                       </div>
                       <div class="field-body">
-
                           <p class="control">
                             <input class="input" type="number" placeholder="Altura"
                             v-model="height"
@@ -85,16 +80,12 @@
                   </div>
                 </form>
 
-                <span class="tag is-success" v-for="baby in babys"> {{ baby.name }}
-                  <button class="delete is-small" v-on:click="removeBaby(baby)"></button> </span>
-                <div class="field is-grouped is-grouped-centered">
+                <div class="field is-grouped is-grouped-centered" style="margin-top: 10px;">
                   <div class="control">
                     <button type="submit" class="button is-primary" v-on:click="submitForm">¡Listo!</button>
+                    <router-link :to="{ name: 'All' }" class="button"> Cancelar </router-link>
                   </div>
                 </div>
-
-              </div>
-            </form>
 
         </div>
         <loader :is-loading="isLoading"/>
@@ -210,6 +201,7 @@
           .then((baby) => {
             this.firstName = baby.name
             this.birthdate = Moment(baby.bornDate).format('DD MM YYYY')
+            this.gender = baby.gender ? 'Masculino' : 'Femenino'
           })
       },
       /*
@@ -273,10 +265,12 @@
         const year = date[2]
         const data = {
           babyId: this.babyId,
-          userId: this.userId,
+          userId: this.$store.getters.SESSION_GET_USER_ID || this.$cookie.get('user_session'),
           name: this.firstName,
           birthdate: Moment(year + '-' + month + '-' + day),
-          gender: gender
+          gender: gender,
+          weight: this.weight,
+          height: this.height
         }
         let dispatch
         if (this.isEdit) dispatch = 'edit_baby'
@@ -285,7 +279,7 @@
 
         return this.$store.dispatch(dispatch, data)
           .then((baby) => {
-            console.log(baby)
+            this.$router.push({name: 'All'})
           })
           .catch(err => {
             console.log(err)

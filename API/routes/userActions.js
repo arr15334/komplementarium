@@ -7,6 +7,7 @@ var express = require("express"),
 // save a new baby
 router.post("/:userId/babies", function (req, res) {
   const userId  = req.params.userId
+  console.log(req.body.data)
   const name    = req.body.data['name']
   const gender    = req.body.data['gender']
   const weight    = req.body.data['weight']

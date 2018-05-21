@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
-    <div class="column">
-      <div class="box" v-show="!isLoading">
+    <div class="column"  v-show="!isLoading">
+      <div class="box">
         <table class="table is-fullwidth" v-if="babies.length > 0">
           <thead>
             <tr>
@@ -9,6 +9,8 @@
               <th>Género</th>
               <th>Edad</th>
               <th>Cumpleaños</th>
+              <th>Editar</th>
+              <th>Borrar</th>
             </tr>
           </thead>
           <tbody>
@@ -20,6 +22,7 @@
               <td> <router-link :to="{ name: 'NewEdit', params: { 'baby': baby.id} }"  class="button is-warning">
                 <span class="icon is-small"><font-awesome-icon icon="edit"/></span>
               </router-link> </td>
+              <td> <a class="button is-danger" v-on:click="confirmDelete(baby.id)"> <span class="icon is-small"> <font-awesome-icon icon="eraser"/> </span> </a> </td>
             </tr>
           </tbody>
         </table>
@@ -31,23 +34,32 @@
           </p>
         </div>
       </div>
-      <loader :is-loading="isLoading"/>
     </div>
-
+    <loader :is-loading="isLoading"/>
+    <confirm-modal :show-confirm="showConfirm"
+                   confirm-msg="¿Realmente desea eliminar los datos de este bebé?"
+                   @accept="deleteBaby"
+                   @cancel="cancelConfirm"/>
   </div>
 
 </template>
 
 <script>
   import Loader from '@/components/common/Loader'
+  import ConfirmModal from '@/components/common/ConfirmModal'
+
   export default {
     name: 'BabyNew',
     components: {
+      ConfirmModal,
       Loader
     },
     data () {
       return {
         babies: [],
+        showConfirm: false,
+        toDelete: null,
+        confirmMsg: null,
         isLoading: false
       }
     },
@@ -65,6 +77,27 @@
         return this.$store.dispatch('babies_get', data)
           .then((babies) => {
             this.babies = babies
+          })
+      },
+      confirmDelete: function (id) {
+        this.toDelete = id
+        this.showConfirm = true
+      },
+      cancelConfirm: function () {
+        this.toDelete = null
+        this.showConfirm = false
+      },
+      deleteBaby: function () {
+        this.showConfirm = false
+        return this.$store.dispatch('delete_baby', {
+          babyId: this.toDelete
+        })
+          .then(() => {
+            this.toDelete = null
+            return this.loadData()
+          })
+          .catch(err => {
+            console.log(err)
           })
       }
     },

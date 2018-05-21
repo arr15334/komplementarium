@@ -11,7 +11,8 @@
               <div class="media">
                 <div class="media-left">
                   <figure class="image is-48x48">
-                    <img src="../assets/baby.png" alt="Placeholder">
+                    <img src="../assets/baby.png" alt="" v-if="baby.gender">
+                    <img src="../assets/baby_girl.png" alt="Placeholder" v-else>
                   </figure>
                 </div>
                 <div class="media-content">
@@ -31,7 +32,7 @@
           </div>
         </div>
         <div class="column">
-          <Today/>
+          <Today :baby="baby.id"/>
         </div>
     </div>
     <loader :is-loading="isLoading"/>

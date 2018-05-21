@@ -214,7 +214,7 @@
       },
 
       showContent: function () {
-        this.$router.push({name: 'AdminMeasurementsHeightsHistory'})
+        this.$router.push({name: 'AdminMeasurementsHeightsHistory', params: {baby: this.babyId}})
       },
 
       addMeasure: function () {

@@ -14,10 +14,13 @@
 
               <div class="box" v-show="babyIsSet">
                 <p> <strong>Calorías disponibles:</strong> {{remainingCalories}} </p>
-                <p> <strong>Menú:</strong> <span v-for="food in menu" class="tag is-warning is-rounded"> {{food.name}} <button class="delete is-small"></button> </span> </p>
+                <p> <strong>Menú:</strong>
+                  <span v-for="food in menu" class="tag is-warning is-rounded"> {{food.name}}
+                    <button class="delete is-small" @click="deleteMenuItem(food._id)"></button>
+                  </span> </p>
                 <div class="field is-grouped is-grouped-centered">
                   <p class="control">
-                     <a class="button is-success">
+                     <a class="button is-success" @click="saveMenu" :class="{'is-loading': isSubmitting}">
                        Guardar menú
                      </a>
                    </p>
@@ -93,7 +96,6 @@
         breadcrumb: [],
         food: [],
         menu: [],
-        remainingCalories: 0,
         isLoading: false,
         isSubmitting: false
       }
@@ -102,13 +104,19 @@
     computed: {
       babyIsSet: function () {
         return this.baby !== null
+      },
+      remainingCalories: function () {
+        let remainingCalories = this.baby ? this.baby.getCalories(this.baby.getAge()) : 0
+        for (const menuItem of this.menu) {
+          remainingCalories -= menuItem.calories
+        }
+        return remainingCalories
       }
     },
 
     methods: {
       addToMenu: function (food) {
         this.menu.push(food)
-        this.remainingCalories = this.remainingCalories - food.calories
       },
 
       getBabys: function () {
@@ -147,14 +155,53 @@
           return
         }
         const ageMonths = this.baby.getAge()
-        this.remainingCalories = this.baby.getCalories(ageMonths)
+        // this.remainingCalories = this.baby.getCalories(ageMonths)
         const data = {
           age: ageMonths
         }
         return this.$store.dispatch('find_foods', data)
           .then((food) => {
             this.food = food
+          })
+          .then(() => {
+            return this.getTodayMenu()
+          })
+          .then(() => {
             this.isLoading = false
+          })
+      },
+      getTodayMenu: function () {
+        const data = {
+          babyId: this.baby.id
+        }
+        return this.$store.dispatch('get_menu_today', data)
+          .then((foods) => {
+            console.log(foods)
+            for (const foo of foods.food) {
+              this.menu.push(foo)
+            }
+          })
+      },
+      deleteMenuItem: function (id) {
+        for (let i = 0; i < this.menu.length; i++) {
+          if (this.menu[i]._id === id) {
+            this.menu.splice(i, 1)
+            return
+          }
+        }
+      },
+      saveMenu: function () {
+        this.isSubmitting = true
+        const data = {
+          babyId: this.baby.id,
+          menu: this.menu
+        }
+        return this.$store.dispatch('save_today_menu', data)
+          .then((response) => {
+            console.log(response)
+          })
+          .then(() => {
+            this.isSubmitting = false
           })
       }
     },

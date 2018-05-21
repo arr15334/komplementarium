@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <div class="box">
+    <div class="box" v-show="!isLoading">
 
       <table class="table is-fullwidth is-striped">
         <thead>
@@ -11,9 +11,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-for="food in menu">
             <td>Desayuno</td>
-            <td>Puré de güicoy, compota de manzana</td>
+            <td>{{food.name}}</td>
             <td>
               <input type="checkbox">
             </td>
@@ -35,22 +35,62 @@
         </tbody>
       </table>
     </div>
+    <loader :is-loading="isLoading"/>
   </div>
 
 </template>
 
 <script>
+import Loader from '@/components/common/Loader'
+
 export default {
   name: 'today',
+  components: {
+    Loader
+  },
+  props: {
+    'baby': {
+      type: String,
+      default: 'text'
+    }
+  },
   data () {
     return {
-      breakfastIsChecked: false
+      menu: []
     }
   },
   methods: {
-    setBreakfastCheck: function () {
-      this.breakfastIsChecked = !this.breakfastIsChecked
+    loadData: function () {
+      return Promise.resolve()
+        .then(() => {
+          return this.getBabyMenu()
+        })
+    },
+    getBabyMenu: function () {
+      this.babyId = this.baby
+      const data = {
+        babyId: this.babyId
+      }
+      return this.$store.dispatch('get_menu_today', data)
+        .then((foods) => {
+          if (foods) {
+            if (foods.food) {
+              for (const foo of foods.food) {
+                this.menu.push(foo)
+              }
+              return
+            }
+            this.menu = []
+          }
+        })
     }
+  },
+  created: function () {
+    this.isLoading = true
+    return this.loadData()
+      .then(() => {
+        this.isLoading = false
+      })
   }
 }
 </script>
