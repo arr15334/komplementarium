@@ -254,7 +254,7 @@
           .$store.dispatch('register', data)
           .then((response) => {
             console.log(response)
-            this.$router.push({name: 'Dashboard'})
+            this.$router.push({name: 'Page'})
           })
           .catch(err => {
             throw err

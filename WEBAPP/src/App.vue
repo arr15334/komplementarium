@@ -2,7 +2,7 @@
   <div id="app">
     <transition
       enter-active-class="animated fadeIn">
-      <router-view/>
+      <router-view :key="$route.fullPath"></router-view>
     </transition>
   </div>
 </template>

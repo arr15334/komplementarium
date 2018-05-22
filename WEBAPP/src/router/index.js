@@ -20,7 +20,9 @@ import AdminMeasurementsHeightsHistory from '@/components/AdminMeasurements/Admi
 import AdminMeasurementsHeightsItem from '@/components/AdminMeasurements/AdminMeasurementsHeightsItem'
 
 import Menu from '@/components/Menu'
+import Calendar from '@/components/common/Calendar'
 import Advices from '@/components/Advices'
+import Allergies from '@/components/Allergies'
 import All from '@/components/Babys/All'
 import NewEdit from '@/components/Babys/NewEdit'
 
@@ -84,9 +86,19 @@ export default new Router(
             component: Menu
           },
           {
+            path: '/calendario',
+            name: 'Calendar',
+            component: Calendar
+          },
+          {
             path: '/consejos',
             name: 'Advices',
             component: Advices
+          },
+          {
+            path: '/alergias',
+            name: 'Allergies',
+            component: Allergies
           },
           {
             path: 'mediciones',

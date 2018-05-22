@@ -24,7 +24,6 @@
                         <div class="control has-icons-left">
                           <div class="select">
                             <select v-model="gender">
-                              <option selected>Indique el sexo del bebé</option>
                               <option v-for="sex in genders"> {{ sex.text }}</option>
                             </select>
                           </div>
@@ -38,7 +37,7 @@
 
                     <div class="field is-horizontal has-addons">
                       <div class="field-label is-small">
-                        <label class="label">Peso</label>
+                        <label class="label">Peso (lbs) </label>
                       </div>
                       <div class="field-body">
                           <p class="control">
@@ -46,14 +45,14 @@
                             v-model="weight"
                             v-bind:class="{'is-danger': weightIsDanger, 'is-success': weightIsSuccess}">
                           </p>
-                          <p class="control">
+                          <!-- <p class="control">
                             <span class="select">
                               <select v-model="weightUnit">
                                 <option>kg</option>
                                 <option>lbs</option>
                               </select>
                             </span>
-                          </p>
+                          </p> -->
                       </div>
                     </div>
 
@@ -120,10 +119,21 @@
         weightUnit: 'kg',
         weight: null,
         height: null,
-        gender: null,
+        gender: 'Seleccione el sexo del bebé',
         firstNameErrorMsg: null,
         babys: [],
-        genders: [],
+        genders: [{
+          value: 'X',
+          text: 'Seleccione el sexo del bebé'
+        },
+        {
+          value: 'M',
+          text: 'Masculino'
+        },
+        {
+          value: 'F',
+          text: 'Femenino'
+        }],
         isLoading: false,
         isSubmitting: false,
         isEdit: false
@@ -187,21 +197,24 @@
     },
     methods: {
       getBaby: function () {
-        const params = this.$route.params || ''
-        this.babyId = params.baby || null
-        if (!this.babyId) {
-          this.isEdit = false
-          return
-        }
-        this.isEdit = true
-        const data = {
-          babyId: this.babyId
-        }
-        return this.$store.dispatch('get_baby', data)
-          .then((baby) => {
-            this.firstName = baby.name
-            this.birthdate = Moment(baby.bornDate).format('DD MM YYYY')
-            this.gender = baby.gender ? 'Masculino' : 'Femenino'
+        return Promise.resolve()
+          .then(() => {
+            const params = this.$route.params || ''
+            this.babyId = params.baby || null
+            if (!this.babyId) {
+              this.isEdit = false
+              return
+            }
+            this.isEdit = true
+            const data = {
+              babyId: this.babyId
+            }
+            return this.$store.dispatch('get_baby', data)
+              .then((baby) => {
+                this.firstName = baby.name
+                this.birthdate = Moment(baby.bornDate).format('DD MM YYYY')
+                this.gender = baby.gender ? 'Masculino' : 'Femenino'
+              })
           })
       },
       /*
@@ -236,18 +249,6 @@
             this.babys.pop()
           }
         }
-      },
-      getGenders: function () {
-        this.genders = [
-          {
-            value: 'M',
-            text: 'Masculino'
-          },
-          {
-            value: 'F',
-            text: 'Femenino'
-          }
-        ]
       },
       submitForm: function (e) {
         if (!this.validForm()) {
@@ -291,8 +292,11 @@
       }
     },
     created: function () {
-      this.getBaby()
-      return this.getGenders()
+      this.isLoading = true
+      return this.getBaby()
+        .then(() => {
+          this.isLoading = false
+        })
     }
   }
 </script>

@@ -1,47 +1,55 @@
 <template>
-        <div class="columns">
-          <div class="column">
-              <div class="box">
-                <h1 class="title">Consejos</h1>
-
-                <div class="box slider">
-                  <progress class="progress is-primary" v-bind:value="sliderCounter + 1" :max="sliderText.length">0%</progress>
-                  <div>
-                    <div class="text">
-                      <strong style="font-size: 1.3em">{{ sliderText[sliderCounter].title }}</strong>
-                      <br>
-                      {{ sliderText[sliderCounter].content }}
-                    </div>
-                    <a class="prev" v-on:click="previousSlide">&#10094;</a>
-                    <a class="next" v-on:click="nextSlide">&#10095;</a>
-                  </div>
-                  <br>
-                  <div class="dots">
-                    <span v-for="advice in sliderText.length" :class="{dot: true, active: sliderCounter == advice - 1}" v-on:click="selectSlide(advice - 1)"></span>
-                  </div>
+  <div class="columns">
+    <div class="column">
+        <div class="box">
+          <div class="tile is-ancestor">
+            <div class="tile is-vertical is-8">
+              <div class="tile">
+                <div class="tile is-parent is-vertical">
+                  <article class="tile is-child notification is-primary">
+                    <p class="title">Vertical...</p>
+                    <p class="subtitle">Top tile</p>
+                  </article>
+                  <article class="tile is-child notification is-warning">
+                    <p class="title">...tiles</p>
+                    <p class="subtitle">Bottom tile</p>
+                  </article>
+                </div>
+                <div class="tile is-parent">
+                  <article class="tile is-child notification is-info">
+                    <p class="title">Middle tile</p>
+                    <p class="subtitle">With an image</p>
+                    <figure class="image is-4by3">
+                      <img src="../assets/groceries.png">
+                    </figure>
+                  </article>
                 </div>
               </div>
-              <div class="box">
-                <h1 class="title">Mitos y realidades</h1>
-                <div class="box slider">
-                  <progress class="progress is-primary" v-bind:value="mythsSliderCounter + 1" v-bind:max="mythsText.length">0%</progress>
-                  <div>
-                    <div class="text">
-                      <strong style="font-size: 1.3em">{{ mythsText[mythsSliderCounter].myth }}</strong>
-                      <br>
-                      {{ mythsText[mythsSliderCounter].reality }}
-                    </div>
-                    <a class="prev" v-on:click="previousMyth">&#10094;</a>
-                    <a class="next" v-on:click="nextMyth">&#10095;</a>
+              <div class="tile is-parent">
+                <article class="tile is-child notification is-danger">
+                  <p class="title">Wide tile</p>
+                  <p class="subtitle">Aligned with the right tile</p>
+                  <div class="content">
+                    <!-- Content -->
                   </div>
-                  <br>
-                  <div class="dots">
-                    <span v-for="myth in mythsText.length" :class="{dot: true, active: mythsSliderCounter == myth - 1}" v-on:click="selectMyth(myth - 1)"></span>
+                </article>
+              </div>
+            </div>
+            <div class="tile is-parent">
+              <article class="tile is-child notification is-success">
+                <div class="content">
+                  <p class="title">Tall tile</p>
+                  <p class="subtitle">With even more content</p>
+                  <div class="content">
+                    <!-- Content -->
                   </div>
                 </div>
-              </div>
+              </article>
+            </div>
           </div>
-      </div>
+        </div>
+    </div>
+  </div>
 
 </template>
 

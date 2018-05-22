@@ -7,33 +7,32 @@
           <tr>
             <th>Tiempo</th>
             <th>Comida</th>
-            <th>¿Listo?</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="food in menu">
+          <tr>
             <td>Desayuno</td>
-            <td>{{food.name}}</td>
-            <td>
-              <input type="checkbox">
-            </td>
+            <td v-if="breakfast.length"> {{ breakfast.toString() }} </td>
+            <td v-else> Ninguna </td>
           </tr>
           <tr>
             <td>Almuerzo</td>
-            <td>Puré de güicoy, compota de manzana</td>
-            <td>
-              <input type="checkbox">
-            </td>
+            <td v-if="lunch.length"> {{ lunch.toString() }} </td>
+            <td v-else> Ninguna </td>
+          </tr>
+          <tr>
+            <td>Refacción</td>
+            <td v-if="snack.length"> {{ snack.toString() }} </td>
+            <td v-else> Ninguna </td>
           </tr>
           <tr>
             <td>Cena</td>
-            <td>Puré de güicoy, compota de manzana</td>
-            <td>
-              <input type="checkbox">
-            </td>
+            <td v-if="dinner.length"> {{ dinner.toString() }} </td>
+            <td v-else> Ninguna </td>
           </tr>
         </tbody>
       </table>
+      <router-link :to="{ name: 'Menu', params: {babyId: this.baby} }">Editar menú</router-link>
     </div>
     <loader :is-loading="isLoading"/>
   </div>
@@ -56,7 +55,11 @@ export default {
   },
   data () {
     return {
-      menu: []
+      breakfast: [],
+      lunch: [],
+      snack: [],
+      dinner: [],
+      isLoading: false
     }
   },
   methods: {
@@ -73,14 +76,35 @@ export default {
       }
       return this.$store.dispatch('get_menu_today', data)
         .then((foods) => {
-          if (foods) {
-            if (foods.food) {
-              for (const foo of foods.food) {
-                this.menu.push(foo)
+          console.log(foods.length)
+          if (foods.length) {
+            for (const foo of foods) {
+              if (foo.mealTime === 'Desayuno') {
+                this.breakfast = []
+                for (const breakfast of foo.food) {
+                  this.breakfast.push(breakfast.name)
+                }
+              } else if (foo.mealTime === 'Almuerzo') {
+                this.lunch = []
+                for (const lunch of foo.food) {
+                  this.lunch.push(lunch.name)
+                }
+              } else if (foo.mealTime === 'Refacción') {
+                this.snack = []
+                for (const snack of foo.food) {
+                  this.snack.push(snack.name)
+                }
+              } else if (foo.mealTime === 'Cena') {
+                this.dinner = []
+                for (const dinner of foo.food) {
+                  this.dinner.push(dinner.name)
+                }
               }
-              return
             }
-            this.menu = []
+          } else {
+            console.log('no hay')
+            this.isLoading = false
+            return null
           }
         })
     }
@@ -89,6 +113,7 @@ export default {
     this.isLoading = true
     return this.loadData()
       .then(() => {
+        console.log('exit')
         this.isLoading = false
       })
   }

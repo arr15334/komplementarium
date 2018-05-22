@@ -70,8 +70,8 @@ const mainMenu = [
       {
         type: 'item',
         name: 'Alergias',
-        introJs: 'Lee información importante para prevenir alergias',
-        component: 'BabyNew',
+        introJs: 'Lee información importante para prevenir alergias o descubrir qué le pudo causar una enfermedad a tu bebé',
+        component: 'Allergies',
         url: '',
         places: ['left']
       }

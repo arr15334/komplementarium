@@ -21,13 +21,13 @@
               </div>
               <div class="content">
                 <p><strong>Edad: </strong> {{ currentAge(baby.bornDate) }} meses</p>
-                <p><strong>Peso: </strong> {{ baby.weightMeasurements[baby.weightMeasurements.length-1].weight }} kgs</p>
+                <p><strong>Peso: </strong> {{ baby.weightMeasurements[baby.weightMeasurements.length-1].weight }} lbs</p>
                 <p><strong>Altura: </strong> {{ baby.heightMeasurements[baby.heightMeasurements.length-1].height }} cms</p>
               </div>
             </div>
             <footer class="card-footer">
-              <a href="#" class="card-footer-item">Peso</a>
-              <a href="#" class="card-footer-item">Altura</a>
+              <router-link :to="{ name: 'AdminMeasurements', params: {} }" class="card-footer-item"> Peso </router-link>
+              <router-link :to="{ name: 'AdminMeasurements', params: {} }" class="card-footer-item"> Altura </router-link>
             </footer>
           </div>
         </div>
@@ -172,7 +172,7 @@
         return this.$store.dispatch('babies_get', data)
           .then((babies) => {
             if (babies.length < 1) {
-              this.$router.push({name: 'BabyNew'})
+              this.$router.push({name: 'NewEdit'})
             }
             this.babies = babies
           })

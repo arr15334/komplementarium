@@ -77,19 +77,39 @@ router.get('/:babyId/weights', (req, res) => {
 router.get('/:babyId/menu', (req, res) => {
   const babyId = req.params.babyId
   const date = req.query.date || moment()
-  console.log(date)
+  // const mealTime = req.query.mealTime || null
 
   Baby.findById(babyId).populate("diet.food").exec(function(err, baby) {
     if (err) {
       res.send({error: err})
     } else {
-      let response
+      let response = []
       for (const dietItem of baby.diet) {
         if (moment(dietItem.date).isSame(date, 'day')) {
-          response = dietItem
+          response.push(dietItem)
         }
       }
       res.send({data: response})
+    }
+  })
+})
+
+router.get('/:babyId/babymenu', (req, res) => {
+  const babyId = req.params.babyId
+  const date = req.query.date || moment()
+  // const mealTime = req.query.mealTime || null
+
+  Baby.findById(babyId).populate("diet.food").exec(function(err, baby) {
+    if (err) {
+      res.send({error: err})
+    } else {
+      let menu = []
+      for (const dietItem of baby.diet) {
+        if (moment(dietItem.date).isSame(date, 'day')) {
+          menu.push(dietItem)
+        }
+      }
+      res.send({menu: menu, baby: baby.name})
     }
   })
 })
@@ -98,13 +118,14 @@ router.put('/:babyId/menu/today', (req, res) => {
   const babyId = req.params.babyId
   const menu = req.body.menu || []
   const date = moment()
+  const mealTime = req.body.mealTime
 
   return Baby.findById(babyId)
     .then((baby) => {
       let found = false
       for (let i = 0; i < baby.diet.length; i++) {
         const dietMenu = baby.diet[i]
-        if (moment(dietMenu.date).isSame(date, 'day')) {
+        if (moment(dietMenu.date).isSame(date, 'day') && dietMenu.mealTime === mealTime) {
           baby.diet[i].food = menu
           found = true
         }
@@ -112,6 +133,7 @@ router.put('/:babyId/menu/today', (req, res) => {
       if (!found) {
         baby.diet.push({
           food: menu,
+          mealTime: mealTime,
           date: moment()
         })
       }
@@ -123,16 +145,27 @@ router.put('/:babyId/menu/today', (req, res) => {
     .catch(err => res.send({success: false, error: err}))
 })
 
-router.post('/:babyId/menu', (req, res) => {
+router.post('/:babyId/menu/today', (req, res) => {
   const babyId = req.params.babyId
-  const food = req.body.food || []
+  const foodItem = req.body.food || ''
+  const mealTime = req.body.mealTime
+  const date = moment()
 
   return Baby.findById(babyId)
     .then((baby) => {
-      for (const foo of food) {
+      let found = false
+      for (let i = 0; i < baby.diet.length; i++) {
+        const dietMenu = baby.diet[i]
+        if (moment(dietMenu.date).isSame(date, 'day') && dietMenu.mealTime === mealTime) {
+          baby.diet[i].food.push(foodItem)
+          found = true
+        }
+      }
+      if (!found) {
         baby.diet.push({
-          food: foo,
-          date: moment()
+          food: [foodItem],
+          date: moment(),
+          mealTime: mealTime
         })
       }
       baby.save()

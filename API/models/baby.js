@@ -28,7 +28,8 @@ var babySchema = new mongoose.Schema({
             ref: "Food"
           }
         ],
-        date: Date
+        date: Date,
+        mealTime: String
       }
     ]
 });

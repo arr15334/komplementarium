@@ -50,6 +50,34 @@ const actions = {
     })
   },
 
+  get_menu_andBaby (context, data = {}) {
+    const babyId = data.babyId || ''
+    const date = data.date || null
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiBabies
+    url = url.replace('{babyId}', babyId) + '/babymenu'
+
+    if (date) {
+      url = url + '?date=' + date
+    }
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          console.log(response)
+          const data = response.data || {}
+          const menu = data.menu
+          const baby = data.baby
+          resolve({menu: menu, baby: baby})
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+
   save_today_menu (context, data = {}) {
     const babyId = data.babyId || ''
     const env = config.env
@@ -59,13 +87,41 @@ const actions = {
     url = url.replace('{babyId}', babyId) + '/menu/today'
 
     const menu = data.menu || []
+    const mealTime = data.mealTime || null
 
     const params = {
-      'menu': menu
+      'menu': menu,
+      'mealTime': mealTime
     }
 
     return new Promise((resolve, reject) => {
       api.put(url, params)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data)
+        })
+        .catch(err => reject(err))
+    })
+  },
+
+  add_food_item (context, data = {}) {
+    const babyId = data.babyId || ''
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    let url = apiRoot + config.apiBabies
+    url = url.replace('{babyId}', babyId) + '/menu/today'
+
+    const food = data.food || []
+    const mealTime = data.mealTime || ''
+
+    const params = {
+      'food': food,
+      'mealTime': mealTime
+    }
+
+    return new Promise((resolve, reject) => {
+      api.post(url, params)
         .then((response) => {
           const data = response.data || {}
           resolve(data)
