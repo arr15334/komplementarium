@@ -28,11 +28,15 @@
 
     <div class="navbar-menu" :class="{'is-active': isNavBarMenuActive}">
       <div class="navbar-start">
-        <NavigatorMenuItem v-for="(item, key) in mainMenu" :key="key" :item="item" 
+        <NavigatorMenuItem v-for="(item, key) in mainMenu" :key="key" :item="item"
                            @click.native="closeMenu"/>
       </div>
 
       <div class="navbar-end">
+          <a class="navbar-item" @click="showIntro" style="color:white">
+            <span class="icon"><font-awesome-icon icon="question-circle"/>&nbsp;</span>
+            Mostrar ayuda
+          </a>
         <!-- TODO: Display real notifications -->
         <!-- notifications -->
 
@@ -48,13 +52,6 @@
           </a>
 
           <div class="navbar-dropdown is-right">
-            <!-- TODO: Edit profile -->
-            <router-link v-if="false" class="navbar-item"
-                         :to="{name: 'Profile'}"
-                         @click.native="closeMenu">
-              <span class="icon"><i class="fa fa-user"></i>&nbsp;</span>
-              Perfil
-            </router-link>
 
             <!-- TODO: ReAdd separator -->
             <hr v-if="false" class="navbar-divider">
@@ -123,7 +120,7 @@
     },
 
     created: function () {
-      this.profileIcon = '/static/imgs/logo-komplementarium.png'
+      this.profileIcon = '/static/imgs/user.png'
       this.mainMenu = mainMenu
     },
     mounted () {

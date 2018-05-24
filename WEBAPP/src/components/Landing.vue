@@ -7,9 +7,9 @@
               <span>Empezar</span>
       </router-link>
     </div>
-    <div class="box slider">
+    <div class="box slider-landing">
       <div class="show-container">
-        <div class="text">
+        <div class="text-landing">
           <strong style="color: white; font-size: 1.3em">{{ sliderText[sliderCounter].title }}</strong>
           <br>
           {{ sliderText[sliderCounter].content }}
@@ -32,6 +32,8 @@
       <li></li>
       <li></li>
       <li></li>
+      <li></li>
+      <li></li>
     </ul>
 
   </div>
@@ -45,25 +47,23 @@ export default {
     return {
       sliderText: [
         {
-          title: 'Prevenir alergias',
-          content: 'They say everything looks better with odd numbers of things. But sometimes I put even numbers—just to upset the critics. ' +
-                    'Only think about one thing at a time. Don\'t get greedy. Remember how free clouds are. They just lay around in the sky all day long. ' +
-                    'All you have to do is let your imagination go wild. And just raise cain. ' +
-                    'These little son of a guns hide in your brush and you just have to push them out.'
-        },
-        {
-          title: 'Buenos hábitos alimenticios',
-          content: 'It\'s hard to see things when you\'re too close. Take a step back and look. ' +
-          'This is an example of what you can do with just a few things, a little imagination and a happy dream in your heart. ' +
-          'We\'ll throw some old gray clouds in here just sneaking around and having fun.' +
-          'Follow the lay of the land. It\'s most important. These trees are so much fun. I get started on them and I have a hard time stopping. Tree trunks grow however makes them happy.'
-        },
-        {
           title: 'Crecer saludable',
-          content: 'Just think about these things in your mind and drop em\' on canvas. Look around, look at what we have.' +
-          'Beauty is everywhere, you only have to look to see it. La- da- da- da- dah. Just be happy.' +
-          'There\'s not a thing in the world wrong with washing your brush. Everyone is going to see things differently - ' +
-          'and that\'s the way it should be. Working it up and down, back and forth.'
+          content: 'El primer año de vida es de gran importancia para los bebés, ya que en este crecen y se desarrollan física y socialmente.' +
+          'Estos cambios suelen afectar su alimentación y su nutrición.' +
+          'Por lo que se hace necesario asegurarle una alimentación suficiente y adecuada, con el objetivo de satisfacer sus necesidades  ' +
+          ', para  prevenir deficiencias nutricionales que afecten su crecimiento y desarrollo,  así como crear hábitos alimentarios saludables.'
+        },
+        {
+          title: 'Alimentación complementaria',
+          content: 'Consiste en dar al lactante a partir de los 6 meses de edad otros alimentos y líquidos diferentes a la leche materna, pero complementarios a ésta. ' +
+          'Se mantiene la lactancia materna pero se inicia la introducción de otros alimentos y líquidos. Estos por sí mismos no constituyen una dieta completa, pero ' +
+          'deben ser nutritivos y deben ser administrados en cantidades adecuadas para que el niño continúe su crecimiento. Este proceso dura hasta los 2 años de edad'
+        },
+        {
+          title: 'Prevenir alergias e intolerancias',
+          content: 'Durante esta etapa puede haber desconocimiento por parte de los encargados del cuidado del bebé de cómo debe ser la forma correcta ' +
+          'de la introducción de alimentos y se cometen errores que pueden causar alergias, intolerancias, enfermedades y deficiencias nutricionales. ' +
+          'Komplementarium le permitirá identificar los conceptos básicos que se deben tener en cuenta durante el inicio de la alimentación complementaria.    '
         }
       ],
       sliderCounter: 0
@@ -133,11 +133,11 @@ hr{
 #landing-header h1 {
   color: #fff;
 }
-.slider {
+.slider-landing {
   z-index: 1;
   position: relative;
   margin-top: 3%;
-  background-color: rgba(50,0,20,0.4);
+  background-color: rgba(50,50,50,0.5);
 }
 /* Next & previous buttons */
 .prev, .next {
@@ -165,7 +165,7 @@ hr{
 }
 
 /* Caption text */
-.text {
+.text-landing {
   color: white;
   padding: 8px 12px;
   text-align: center;
@@ -212,13 +212,13 @@ hr{
   background-repeat: no-repeat;
   opacity: 0;
   z-index: 0;
-  animation: imageAnimation 50s linear infinite;
+  animation: imageAnimation 70s linear infinite;
 }
 .slideshow li:nth-child(1) {
   background-image: url("../assets/kazuend-127416-unsplash.jpg");
 }
 .slideshow li:nth-child(2) {
-  background-image: url("../assets/anton-darius-thesollers-295119-unsplash.jpg");
+  background-image: url("../assets/arturo-rivera-537264-unsplash.jpg");
   animation-delay: 10s;
 }
 .slideshow li:nth-child(3) {
@@ -230,8 +230,16 @@ hr{
   animation-delay: 30s;
 }
 .slideshow li:nth-child(5) {
-  background-image: url("../assets/valeria-zoncoll-145929-unsplash.jpg");
+  background-image: url("../assets/roderico-y-diaz-123969-unsplash.jpg");
   animation-delay: 40s;
+}
+.slideshow li:nth-child(6) {
+  background-image: url("../assets/anton-darius-thesollers-295119-unsplash.jpg");
+  animation-delay: 50s;
+}
+.slideshow li:nth-child(7) {
+  background-image: url("../assets/valeria-zoncoll-145929-unsplash.jpg");
+  animation-delay: 60s;
 }
 @keyframes imageAnimation {
   0% {

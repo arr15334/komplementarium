@@ -26,6 +26,7 @@
             </tr>
           </tbody>
         </table>
+        <p v-else> No ha ingresado datos de ningún bebé </p>
       </div>
       <div class="field">
         <div class="field is-grouped is-grouped-centered">

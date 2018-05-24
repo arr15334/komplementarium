@@ -66,7 +66,7 @@
                   </button>
                   -->
                   <router-link id="google_btn" class="button"
-                  :disabled="isSubmitting"
+                  :disabled="true"
                   :to="{name: 'Dashboard'}">
                   Ingresa con  <span class="icon" style="margin-left: 2px;"> <font-awesome-icon :icon="['fab', 'google']"/> </span>
                   </router-link>

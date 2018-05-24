@@ -18,24 +18,28 @@ router.post("/register", function(req, res) {
   const email = req.body.data.attributes['email']
   const password = req.body.data.attributes['password']
   const lastname = req.body.data.attributes['last_name'] || null
-
+  console.log(name + email + password)
     User.register(new User({
       username: email,
       name: name,
       lastname: lastname
     }), password, function(err, user){
-        if (err){
-            return res.send({
+        if (err) {
+          console.log('error')
+            return res.json({
               'success': false,
               'message': err
             })
+        } else {
+          console.log(user)
+          passport.authenticate("local")(req, res, function() {
+            console.log('aqui')
+              res.json({
+                'success': true,
+                'user': user
+              });
+          });
         }
-        passport.authenticate("local")(req, res, function(){
-            res.send({
-              'success': true,
-              'user': user
-            });
-        });
     });
 });
 

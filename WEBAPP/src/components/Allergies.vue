@@ -2,46 +2,77 @@
   <div class="columns">
     <div class="column">
         <div class="box">
+          <h1 class="title">Alergias</h1>
           <div class="tile is-ancestor">
             <div class="tile is-vertical is-8">
               <div class="tile">
                 <div class="tile is-parent is-vertical">
                   <article class="tile is-child notification is-primary">
-                    <p class="title">Vertical...</p>
-                    <p class="subtitle">Top tile</p>
+                    <p class="title">Prevenir</p>
+                    <p class="subtitle">Durante la lactancia</p>
+                    <div class="content">
+                      Recuerde que durante los primeros 6 meses, la mamá debe evitar consumir los alimentos
+                      potencialmente alergénicos, para evitar que pasen al bebé a través de la leche
+                    </div>
                   </article>
                   <article class="tile is-child notification is-warning">
-                    <p class="title">...tiles</p>
-                    <p class="subtitle">Bottom tile</p>
+                    <p class="title">Síntomas</p>
+                    <div class="content">
+                      Las alergias pueden afectar cualquier sistema del cuerpo y ocasionar
+                      síntomas como diarrea, náuseas, vómitos y
+                      estreñimiento
+                    </div>
                   </article>
                 </div>
                 <div class="tile is-parent">
                   <article class="tile is-child notification is-info">
-                    <p class="title">Middle tile</p>
-                    <p class="subtitle">With an image</p>
-                    <figure class="image is-4by3">
-                      <img src="../assets/groceries.png">
-                    </figure>
+                    <p class="title">Reaccionar a tiempo</p>
+                    <p class="subtitle">Iniciando la ablactación</p>
+                    <div class="content">
+                      <figure class="image is-96x96" style="margin: 15px auto;">
+                        <img src="../assets/baby-bottle.png">
+                      </figure>
+                      Los alimentos sólidos se deben empezar a introducir uno a uno, dejando pasar unos días antes de darle el siguiente alimento nuevo; de
+                      manera que se pueda identificar a tiempo cualquier reacción alérgica
+                    </div>
                   </article>
                 </div>
               </div>
               <div class="tile is-parent">
-                <article class="tile is-child notification is-danger">
-                  <p class="title">Wide tile</p>
-                  <p class="subtitle">Aligned with the right tile</p>
+                <article class="tile is-child notification is-danger" style="background-color: darkorange">
+                  <p class="title">Cuidado</p>
+                  <p class="subtitle">Fórmulas lácteas</p>
                   <div class="content">
-                    <!-- Content -->
+                    <span class="icon is-large">
+                      <img src="../assets/food.png">
+                    </span>
+                    No utilizar fórmulas lácteas a base de soya, de vaca ni de cabra, por ser alérgenos. Recuerde que la
+                    leche materna es el mejor alimento para su bebé
                   </div>
                 </article>
               </div>
             </div>
             <div class="tile is-parent">
-              <article class="tile is-child notification is-success">
+              <article class="tile is-child notification is-warning">
                 <div class="content">
-                  <p class="title">Tall tile</p>
-                  <p class="subtitle">With even more content</p>
+                  <p class="title">Posibles alérgenos</p>
+                  <p class="subtitle">Alimentos</p>
                   <div class="content">
-                    <!-- Content -->
+                    <ul>
+                      <li>Huevo</li>
+                      <li>Maní</li>
+                      <li>Nueces</li>
+                      <li>Leche de vaca</li>
+                      <li>Frijoles de soya</li>
+                      <li>Trigo</li>
+                      <li>Pescado / mariscos</li>
+                      <li>Fresas</li>
+                      <li>Chocolates</li>
+                      <li>Cítricos</li>
+                    </ul>
+                    <figure class="image is-4by3">
+                      <img src="../assets/groceries.png">
+                    </figure>
                   </div>
                 </div>
               </article>

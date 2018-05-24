@@ -25,6 +25,7 @@ const mainMenu = [
         type: 'item',
         name: 'Calendario',
         component: 'Calendar',
+        introJs: 'Consulta qué alimentos le has dado a tu hijo en el pasado',
         url: '',
         places: ['left']
       },
@@ -40,7 +41,7 @@ const mainMenu = [
         type: 'item',
         name: 'Mediciones',
         component: 'AdminMeasurements',
-        introJs: 'Lleva las mediciones de tus hijos/as',
+        introJs: 'Lleva las mediciones de altura y peso de tus hijos/as',
         url: '',
         places: ['left']
       },

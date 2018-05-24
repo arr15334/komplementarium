@@ -112,7 +112,7 @@
                   <button type="submit"
                           class="button is-primary"
                           :class="{'is-loading': isSubmitting}"
-                          v-on:click="">Registrarme
+                          v-on:click="submitForm">Registrarme
                   </button>
                 </div>
               </div>
@@ -249,14 +249,16 @@
         if (this.lastNameIsSet) {
           data.lastName = this.lastName
         }
-
+        this.isSubmitting = true
         return this
           .$store.dispatch('register', data)
           .then((response) => {
             console.log(response)
-            this.$router.push({name: 'Page'})
+            this.isSubmitting = false
+            this.$router.push({name: 'Signin'})
           })
           .catch(err => {
+            this.$router.push({name: 'Signin'})
             throw err
           })
       },

@@ -93,6 +93,7 @@
 </template>
 
 <script>
+  import VueNotifications from 'vue-notifications'
   import FormInput from '@/components/common/FormInput'
   import Loader from '@/components/common/Loader'
   import FoodCard from '@/components/FoodCard'
@@ -160,6 +161,13 @@
         }
         this.mealTimeErrorMessage = 'Debe escoger el tiempo de comida'
         return false
+      }
+    },
+
+    notifications: {
+      showSuccessMsg: {
+        type: VueNotifications.types.success,
+        message: 'Se ha guardado el menú del día'
       }
     },
 
@@ -361,6 +369,7 @@
           })
           .then(() => {
             this.isSubmitting = false
+            this.showSuccessMsg()
           })
       }
     },

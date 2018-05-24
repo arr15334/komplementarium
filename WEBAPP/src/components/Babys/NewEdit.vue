@@ -58,21 +58,13 @@
 
                     <div class="field is-horizontal has-addons">
                       <div class="field-label is-small">
-                        <label class="label">Altura</label>
+                        <label class="label">Altura (cms)</label>
                       </div>
                       <div class="field-body">
                           <p class="control">
                             <input class="input" type="number" placeholder="Altura"
                             v-model="height"
                             v-bind:class="{'is-danger': heightIsDanger, 'is-success': heightIsSuccess}">
-                          </p>
-                          <p class="control">
-                            <span class="select">
-                              <select v-model="heightUnit">
-                                <option>cm</option>
-                                <option>ft</option>
-                              </select>
-                            </span>
                           </p>
                       </div>
                     </div>
@@ -81,7 +73,7 @@
 
                 <div class="field is-grouped is-grouped-centered" style="margin-top: 10px;">
                   <div class="control">
-                    <button type="submit" class="button is-primary" v-on:click="submitForm">¡Listo!</button>
+                    <button type="submit" class="button is-primary":class="{'is-loading': isSubmitting}" v-on:click="submitForm">¡Listo!</button>
                     <router-link :to="{ name: 'All' }" class="button"> Cancelar </router-link>
                   </div>
                 </div>
@@ -276,10 +268,11 @@
         let dispatch
         if (this.isEdit) dispatch = 'edit_baby'
         else dispatch = 'baby_new'
-        console.log(data)
+        this.isSubmitting = true
 
         return this.$store.dispatch(dispatch, data)
           .then((baby) => {
+            this.isSubmitting = false
             this.$router.push({name: 'All'})
           })
           .catch(err => {

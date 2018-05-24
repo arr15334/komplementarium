@@ -53,7 +53,7 @@
             <font-awesome-icon icon="sign-out-alt" />
           </span>
           <span>
-            Cerrar sesión
+            Cerrar sesian
           </span>
         </router-link>
       </div>

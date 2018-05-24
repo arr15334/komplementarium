@@ -11,7 +11,8 @@ import solid from '@fortawesome/fontawesome-free-solid'
 import brands from '@fortawesome/fontawesome-free-brands'
 import 'vue-event-calendar/dist/style.css' // ^1.1.10, CSS has been extracted as one file, so you can easily update it.
 import vueEventCalendar from 'vue-event-calendar'
-// import miniToastr from 'mini-toastr'
+import VueNotifications from 'vue-notifications'
+import miniToastr from 'mini-toastr'
 
 import App from '@/App'
 import router from '@/router'
@@ -34,7 +35,7 @@ if (analytics !== null && analytics.length > 0) {
 Vue.use(vueEventCalendar, {locale: 'es'}) // locale can be 'zh' , 'en' , 'es', 'pt-br', 'ja', 'ko', 'fr', 'it', 'ru', 'de', 'vi', 'ua'
 Vue.use(VueIntro)
 Vue.use(VueCookie)
-/*
+
 miniToastr.init()
 function toast ({ title, message, type, timeout, cb }) {
   return miniToastr[type](message, title, timeout, cb)
@@ -45,7 +46,9 @@ const options = {
   info: toast,
   warn: toast
 }
-*/
+
+Vue.use(VueNotifications, options)
+// VueNotifications have auto install but if we want to specify options we've got to do it manually.
 Vue.http = Vue.prototype.$http = axios
 
 Vue.config.productionTip = false

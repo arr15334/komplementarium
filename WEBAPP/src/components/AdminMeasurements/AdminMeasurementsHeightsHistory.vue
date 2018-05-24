@@ -37,14 +37,14 @@
         <tr>
           <th>Altura</th>
           <th>Fecha</th>
-          <th width="100">&nbsp;</th>
+          <!-- <th width="100">&nbsp;</th> -->
         </tr>
         </thead>
         <tbody>
         <tr v-for="babyHeight in babyHeights">
           <td>{{ babyHeight.height }}</td>
           <td>{{ babyHeight.date }}</td>
-          <td style="text-align: right">
+          <!-- <td style="text-align: right">
             <p class="field">
               <a class="button is-danger" @click="confirmDelete(babyHeight.id)">
                                 <span class="icon">
@@ -52,7 +52,7 @@
                                 </span>
               </a>
             </p>
-          </td>
+          </td> -->
         </tr>
         </tbody>
       </table>

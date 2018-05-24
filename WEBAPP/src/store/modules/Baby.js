@@ -220,6 +220,29 @@ const actions = {
         })
         .catch(err => reject(err))
     })
+  },
+  get_baby_weights (context, data = {}) {
+    const env = config.env
+    const apiRoot = config[env].apiRoot
+
+    const babyId = data.babyId || ''
+    const offset = data.pageNumber || null
+
+    let url = apiRoot + config.apiBabies
+    url = url.replace('{babyId}', babyId) + '/weights'
+
+    if (offset) {
+      url = url + '?page=' + offset
+    }
+
+    return new Promise((resolve, reject) => {
+      api.get(url)
+        .then((response) => {
+          const data = response.data || {}
+          resolve(data)
+        })
+        .catch(err => reject(err))
+    })
   }
 }
 
