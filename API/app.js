@@ -1,6 +1,7 @@
 var express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
+    compression = require("compression"),
     mongoose    = require("mongoose"),
     passport    = require("passport"),
     LocalStrategy   =require("passport-local"),
@@ -15,8 +16,9 @@ var babyRoutes    = require("./routes/babyRoutes")
 
 
 
-app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({ limit: '3mb' }))
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(compression())
 app.use(cors())
 mongoose.Promise = global.Promise;
 

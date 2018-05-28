@@ -53,7 +53,8 @@ router.get('/:babyId/heights', (req, res) => {
       if (measurements.length > limite) {
         measurements = measurements.slice(0, limite)
       }
-      res.send({success: true, total: totalPages, measurements: measurements})
+      const birthdate = baby.bornDate
+      res.send({success: true, total: totalPages, measurements: measurements, birthdate: birthdate})
     })
 })
 
@@ -69,7 +70,8 @@ router.get('/:babyId/weights', (req, res) => {
       if (measurements.length > limite) {
         measurements = measurements.slice(0, limite)
       }
-      res.send({success: true, total: totalPages, measurements: measurements})
+      const birthdate = baby.bornDate
+      res.send({success: true, total: totalPages, measurements: measurements, birthdate: birthdate})
     })
 })
 

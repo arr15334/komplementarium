@@ -42,7 +42,7 @@
                 <p class="help">Recuerda complementar los alimentos con leche materna</p>
                 <hr>
                 <p> <strong>Desayuno</strong>
-                  <span v-for="food in breakfast" class="tag is-warning is-rounded"> {{food.name}}
+                  <span v-for="food in breakfast" class="tag is-primary is-rounded"> {{food.name}}
                     <button class="delete is-small" @click="deleteMenuItem(food._id, 'breakfast')"></button>
                   </span> </p>
                 <p> <strong>Almuerzo</strong>
@@ -64,6 +64,10 @@
                      </a>
                    </p>
                 </div>
+              </div>
+
+              <div class="notification is-warning" v-show="differentItems > 3">
+                ¡Intenta no variar tanto los alimentos para que tu bebé se pueda acostumbrar a una comida y puedas identificar fácilmente una alergia!
               </div>
 
               <div class="box" v-show="food.length > 0 && !isLoading">
@@ -155,6 +159,22 @@
       mealTimeIsSet: function () {
         return this.mealTime !== 'Cualquiera'
       },
+      differentItems: function () {
+        let foodItems = []
+        for (const menuItem of this.breakfast) {
+          if (foodItems.indexOf(menuItem._id) < 0) foodItems.push(menuItem._id)
+        }
+        for (const menuItem of this.lunch) {
+          if (foodItems.indexOf(menuItem._id) < 0) foodItems.push(menuItem._id)
+        }
+        for (const menuItem of this.snack) {
+          if (foodItems.indexOf(menuItem._id) < 0) foodItems.push(menuItem._id)
+        }
+        for (const menuItem of this.dinner) {
+          if (foodItems.indexOf(menuItem._id) < 0) foodItems.push(menuItem._id)
+        }
+        return foodItems.length
+      },
       mealTimeIsValid: function () {
         if (this.mealTimeIsSet) {
           return true
@@ -200,6 +220,9 @@
             console.log(params)
             if (params.babyId) {
               this.babyLabel = params.babyId
+              if (params.mealTime) {
+                this.mealTime = params.mealTime
+              }
               return this.findFood(params.babyId)
             }
           })

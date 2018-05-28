@@ -11,6 +11,16 @@ const config = {
     forgotCallback: '/#/reset'
   },
 
+  deployment: {
+    domain: 'localhost',
+    root: 'http://localhost:8080',
+    apiRoot: 'https://radiant-springs-64880.herokuapp.com',
+    cookieDomain: 'localhost',
+    cookieSecure: false,
+    analytics: '',
+    forgotCallback: '/#/reset'
+  },
+
   apiLoginGoogle: '/login/google',
   apiRegister: '/register',
   apiLogin: '/login',

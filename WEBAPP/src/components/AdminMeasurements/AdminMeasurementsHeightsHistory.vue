@@ -98,6 +98,17 @@
       return {
         isLoading: true,
         currentPage: 1,
+        birthdate: null,
+        expectedValues: {
+          0: 50.3,
+          3: 60,
+          6: 67,
+          9: 72,
+          12: 76,
+          15: 79,
+          18: 82.5,
+          24: 88
+        },
         babyHeights: [],
         totalPages: 0,
         chartData: null,
@@ -174,6 +185,7 @@
         return this
           .$store.dispatch('get_baby_heights', data)
           .then(babyHeights => {
+            this.birthdate = babyHeights.birthdate
             this.babyHeights = babyHeights.measurements || []
             this.totalPages = babyHeights.total || 0
 
@@ -196,11 +208,15 @@
         }
 
         const data = []
+        let expectedValue = []
         for (let i = 0; i < this.babyHeights.length; i++) {
           const measure = this.babyHeights[i]
+          const currentMonths = Math.round(Moment(measure.date).diff(Moment(this.birthdate), 'months', true))
           chartData.labels.push(Moment(measure.date).format('D-M'))
           this.babyHeights[i].date = Moment(measure.date).format('DD - MMMM - YYYY')
           data.push(measure.height)
+          const value = this.findShortestDistance(currentMonths)
+          expectedValue.push(this.expectedValues[value])
         }
 
         chartData.datasets.push(
@@ -210,11 +226,71 @@
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1
+          },
+          {
+            label: 'Altura promedio mundial',
+            data: expectedValue,
+            backgroundColor: 'rgba(162, 235, 54, 0.4)',
+            borderColor: 'rgba(162, 235, 54, 1)',
+            borderWidth: 1
           }
         )
 
         this.chartData = chartData
       },
+
+      findShortestDistance: function (month) {
+        let shortestDistance = 10000
+        let bestMonth = 0
+        for (const m of Object.keys(this.expectedValues)) {
+          const distance = Math.abs(month - m)
+          console.log('distance ' + distance + ' ' + m)
+          if (distance <= shortestDistance) {
+            shortestDistance = distance
+            bestMonth = m
+          }
+        }
+        return bestMonth
+      },
+
+      /*
+
+    setChartData: function () {
+      const chartData = {
+        labels: [],
+        datasets: []
+      }
+
+      const data = []
+      const expectedValue = []
+      for (let i = this.userTemperatures.length - 1; i >= 0; i--) {
+        const measure = this.userTemperatures[i]
+        chartData.labels.push(measure.date.format('D-M'))
+        data.push(measure.temperature)
+        expectedValue.push(37)
+      }
+
+      chartData.datasets.push(
+        {
+          label: 'Temperatura',
+          data: data,
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '37 °C',
+          data: expectedValue,
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          borderColor: 'rgba(162, 235, 54, 1)',
+          borderWidth: 1
+        }
+      )
+
+      this.chartData = chartData
+    },
+
+      */
 
       cancelConfirm: function () {
         this.toDelete = null

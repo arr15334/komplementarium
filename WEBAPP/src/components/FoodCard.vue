@@ -28,7 +28,7 @@
             </div>
           </div>
         </div>
-        <a @click="addToMenu(foodId)" class="button is-primary"><font-awesome-icon icon="plus"/></a>
+        <a @click="addToMenu(foodId)" class="button is-primary">Confirmar <span class="icon" style="margin-left: 3px;"> <font-awesome-icon icon="plus-circle"/> </span> </a>
         <a @click="cancelAddFood" class="button">Cancelar</a>
       </form>
       <div class="media" v-show="!isAddFood">
@@ -131,7 +131,7 @@ export default {
           }
           let timestamp = new Date() + ''
           timestamp = timestamp.replace(/ /g, '')
-          this.$router.push({name: 'Menu', params: {babyId: this.babyId}, query: {x: timestamp}})
+          this.$router.push({name: 'Menu', params: {babyId: this.babyId, mealTime: this.mealTime}, query: {x: timestamp}})
         })
     },
     addFood: function () {

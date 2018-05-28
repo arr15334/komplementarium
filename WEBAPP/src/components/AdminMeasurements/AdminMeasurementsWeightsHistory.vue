@@ -99,6 +99,17 @@
         isLoading: true,
         currentPage: 1,
         babyHeights: [],
+        birthdate: null,
+        expectedValues: {
+          0: 7.5,
+          3: 13.6,
+          6: 17.6,
+          9: 20.3,
+          12: 22.5,
+          15: 24.47,
+          18: 26,
+          24: 28.4
+        },
         totalPages: 0,
         chartData: null,
         chartOptions: {
@@ -174,6 +185,7 @@
         return this
           .$store.dispatch('get_baby_weights', data)
           .then(babyHeights => {
+            this.birthdate = babyHeights.birthdate
             this.babyHeights = babyHeights.measurements || []
             this.totalPages = babyHeights.total || 0
 
@@ -196,24 +208,49 @@
         }
 
         const data = []
+        let expectedValue = []
         for (let i = 0; i < this.babyHeights.length; i++) {
           const measure = this.babyHeights[i]
+          const currentMonths = Math.round(Moment(measure.date).diff(Moment(this.birthdate), 'months', true))
           chartData.labels.push(Moment(measure.date).format('D-M'))
           this.babyHeights[i].date = Moment(measure.date).format('DD - MMMM - YYYY')
           data.push(measure.weight)
+          const value = this.findShortestDistance(currentMonths)
+          expectedValue.push(this.expectedValues[value])
         }
 
         chartData.datasets.push(
           {
-            label: 'Peso',
+            label: 'Peso (libras)',
             data: data,
             backgroundColor: 'rgba(235, 162, 54, 0.4)',
+            borderColor: 'rgba(235, 162, 54, 1)',
+            borderWidth: 1
+          },
+          {
+            label: 'Peso promedio mundial (libras)',
+            data: expectedValue,
+            backgroundColor: 'rgba(235, 162, 54, 0.8)',
             borderColor: 'rgba(235, 162, 54, 1)',
             borderWidth: 1
           }
         )
 
         this.chartData = chartData
+      },
+
+      findShortestDistance: function (month) {
+        let shortestDistance = 10000
+        let bestMonth = 0
+        for (const m of Object.keys(this.expectedValues)) {
+          const distance = Math.abs(month - m)
+          console.log('distance ' + distance + ' ' + m)
+          if (distance <= shortestDistance) {
+            shortestDistance = distance
+            bestMonth = m
+          }
+        }
+        return bestMonth
       },
 
       cancelConfirm: function () {

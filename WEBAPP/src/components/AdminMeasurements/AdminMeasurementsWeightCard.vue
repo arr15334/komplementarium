@@ -43,13 +43,13 @@
       </form>
     </div>
 
-    <div class="card-footer" v-show="!isLoading">
+    <div class="card-footer" v-show="!isLoading && !isAddMeasure">
       <a @click="showContent" class="card-footer-item">
-        <span class="icon has-text-black"><font-awesome-icon icon="eye" /></span>
+        <span class="icon has-text-black">Detalle <font-awesome-icon icon="eye" style="margin-left: 3px;"/></span>
       </a>
 
       <a @click="addMeasure" class="card-footer-item">
-        <span class="icon has-text-black"><font-awesome-icon icon="plus-square" /></i></span>
+        <span class="icon has-text-black">Agregar<font-awesome-icon icon="plus-square" style="margin-left: 3px;"/></i></span>
       </a>
     </div>
   </div>
@@ -202,7 +202,7 @@
 
         chartData.datasets.push(
           {
-            label: this.name,
+            label: this.name + ' (lbs)',
             data: data,
             backgroundColor: 'rgba(235, 162, 54, 0.4)',
             borderColor: 'rgba(235, 162, 54, 1)',
